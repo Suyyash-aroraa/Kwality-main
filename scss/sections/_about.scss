@@ -1,0 +1,198 @@
+@font-face {
+    font-family: Emerland;
+    src: url('/assets/fonts/Emerland.otf');
+}
+
+
+.about{
+    font-family: Emerland,'Cormorant Garamond', 'Times New Roman', Times, serif;
+    .heading{
+        font-size: 3rem;
+        line-height: 2.3rem;
+        text-decoration: underline;
+        margin-bottom: 3rem;
+    }
+    .left-image{
+        display: flex;
+        justify-content: center;
+        margin-bottom: 3rem ;
+        position: relative;
+        &--img{
+            width: 290px;
+            height:290px;
+            border: 10px #22224F solid;
+            background-image: url('/Assets/images/menu.png');
+            background-size: cover;
+            position: relative;
+            top: 6.5rem;
+            left: 4rem;
+
+        }
+        .delicious{
+            font-size: 2.8rem;
+            z-index: 2;
+            position: absolute;
+            margin-left: 1rem;
+        }
+    }
+    .row{
+        justify-content:center ;
+    }
+    .right-text{
+        
+        margin-top: 4.5rem !important;
+    }
+    .left-reveal{
+        visibility: hidden;
+        transform: translateX(-100px);
+        transition: all 1s ease-in;
+    }
+    .right-reveal{
+        transform: translateX(80px);
+        visibility: hidden;
+        transition: all 1s ease-in;
+    }
+    .active{
+        transform: translate(0px, 0px);
+
+        visibility: visible;
+    }
+    .staff{
+        font-size: 2.8rem;
+        z-index: 2;
+        position: absolute;
+        margin-left: 1rem;
+    }
+    .staff-area{
+        margin-top: 7rem !important;
+        flex-direction: row-reverse;
+        justify-content: center !important;
+        .text{
+            margin-top: 8rem;
+        }
+
+        .right-image{
+            display: flex;
+            justify-content: center;
+            &--img{
+                width: 290px;
+                height:290px;
+                border: 10px #22224F solid;
+                background-image: url('/Assets/images/Staff.png');
+                background-size: cover;
+                position: relative;
+                background-position: center;
+                top: 6.5rem;
+                right: 4rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .about{
+        .row{
+            flex-wrap: nowrap;
+        }
+        .right-image{
+            justify-content: right ;
+        }
+        .staff-area{
+            .text{
+                margin-top: 3.5rem;
+                margin-right: 2rem;
+            }
+        }
+        .left-image{
+            justify-content: left ;
+        }
+        .right-text{
+            margin-left: 2rem;
+        }
+        .right-reveal, .left-reveal{
+            transform: translateY(100px);
+            visibility: hidden;
+            transition: all .5s ease-in;
+        }
+        .active{
+            transform: translate(0px, 0px);
+            visibility: visible;
+        }
+        
+    }
+}
+
+@media (max-width: 770px) {
+    .about{
+        .row{
+            flex-wrap: wrap;
+        }
+        .staff-area{
+            .text{
+                margin-top: 7.5rem !important;
+            }
+        }
+        .left-image{
+            justify-content: center !important;
+        }
+        .right-image{
+            justify-content: center !important;
+        }
+        .delicious{
+            margin: 0;
+        }
+        .right-text{
+            padding: 0;
+            margin-right: 1rem;
+        }
+    }
+    
+}
+
+@media (max-width: 480px) {
+    .right-image{
+        display: flex;
+        justify-content: center;
+        &--img{
+            width: 210px !important;
+            height:210px !important;
+            border: 10px #22224F solid;
+            background-image: url('/Assets/images/Staff.png');
+        
+        }
+    }
+    .left-image{
+        display: flex;
+        width: 220px;
+        height: 220px;
+        &--img{
+            width: 210px !important;
+            height:210px !important;
+            border: 10px #22224F solid;
+        }
+    }
+    .gray-block{
+        width: 220px !important;
+        height: 220px !important;
+    }
+    .staff{
+        font-size: 2rem !important;
+    }
+}
+@media (max-width:360px) {
+    .left-image{
+        justify-content: left !important;
+    }
+    .about .right-image{
+        justify-content: right !important;
+    }
+    .staff-area{
+        justify-content: right !important;
+    }
+    .delicious{
+        justify-content: left !important;
+    }
+    .right-text{
+        margin-left: 0 !important;
+    }
+}

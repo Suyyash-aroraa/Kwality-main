@@ -1,0 +1,28 @@
+@use './custom';
+@use './sections/nav';
+@use './sections/landing';
+@use './sections/about';
+@use './sections/menu';
+@use './sections/contact';
+@use './sections/location';
+@use './sections/navmenu';
+@use './sections/footer';
+
+@font-face {
+    font-family: Emerland;
+    src: url('/Kwality-2/assets/fonts/Emerland.otf');
+}
+
+*{
+    font-family: Emerland,'Cormorant Garamond', 'Times New Roman', Times, serif;
+}
+img.icon{
+
+    filter: invert(1) !important;
+}
+.logo{
+    background-color: transparent;
+}
+body{
+    background-color: #faf8f3;
+}

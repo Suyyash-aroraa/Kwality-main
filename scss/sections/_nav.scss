@@ -1,0 +1,32 @@
+@font-face {
+    font-family: Emerland;
+    src: url('/Kwality-2/assets/fonts/Emerland.otf');
+}
+
+.navbar{
+    font-family: Emerland,'Cormorant Garamond', 'Times New Roman', Times, serif;
+    nav{
+        z-index: 1;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        height: 4rem;
+        align-items: center;
+        
+        .menu{
+            width: 2.5rem;
+            height: 2.5rem;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            i{
+                filter: brightness(1000%);
+            }
+        }
+        .logo{
+            height: 100%;
+        }
+    }
+}
