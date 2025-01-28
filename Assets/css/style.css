@@ -11860,7 +11860,7 @@ textarea.form-control-lg {
 }
 @font-face {
   font-family: Emerland;
-  src: url("/Kwality-2/assets/fonts/Emerland.otf");
+  src: url("/assets/fonts/Emerland.otf");
 }
 .navbar {
   font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
@@ -11890,7 +11890,7 @@ textarea.form-control-lg {
 
 @font-face {
   font-family: Emerland;
-  src: url("/Kwality-2/assets/fonts/Emerland.otf");
+  src: url("/assets/fonts/Emerland.otf");
 }
 #landing {
   font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
@@ -11905,7 +11905,7 @@ textarea.form-control-lg {
   display: none;
   width: 100%;
   height: 100vh;
-  background-image: url("/Kwality-2/Assets/images/bg-3.png");
+  background-image: url("/Assets/images/bg-3.png");
   background-position: center;
 }
 #landing .background-2 {
@@ -11913,13 +11913,13 @@ textarea.form-control-lg {
   display: none;
   width: 100%;
   height: 100vh;
-  background-image: url("/Kwality-2/Assets/images/bg-2.png");
+  background-image: url("/Assets/images/bg-2.png");
 }
 #landing .background-1 {
   filter: brightness(1);
   width: 100%;
   height: 100vh;
-  background-image: url("/Kwality-2/Assets/images/bg-1.png");
+  background-image: url("/Assets/images/bg-1.png");
   background-position: left;
 }
 #landing .bg-img {
@@ -11958,7 +11958,7 @@ textarea.form-control-lg {
 
 @font-face {
   font-family: Emerland;
-  src: url("/Kwality-2/assets/fonts/Emerland.otf");
+  src: url("/assets/fonts/Emerland.otf");
 }
 .about {
   font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
@@ -11979,7 +11979,7 @@ textarea.form-control-lg {
   width: 290px;
   height: 290px;
   border: 10px #22224F solid;
-  background-image: url("/Kwality-2/Assets/images/menu.png");
+  background-image: url("/Assets/images/menu.png");
   background-size: cover;
   position: relative;
   top: 6.5rem;
@@ -12033,7 +12033,7 @@ textarea.form-control-lg {
   width: 290px;
   height: 290px;
   border: 10px #22224F solid;
-  background-image: url("/Kwality-2/Assets/images/Staff.png");
+  background-image: url("/Assets/images/Staff.png");
   background-size: cover;
   position: relative;
   background-position: center;
@@ -12098,7 +12098,7 @@ textarea.form-control-lg {
     width: 210px !important;
     height: 210px !important;
     border: 10px #22224F solid;
-    background-image: url("/Kwality-2/Assets/images/Staff.png");
+    background-image: url("/Assets/images/Staff.png");
   }
   .left-image {
     display: flex;
@@ -12137,7 +12137,7 @@ textarea.form-control-lg {
 }
 @font-face {
   font-family: Emerland;
-  src: url("/Kwality-2/assets/fonts/Emerland.otf");
+  src: url("/assets/fonts/Emerland.otf");
 }
 .menu {
   font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
@@ -12379,7 +12379,7 @@ textarea.form-control-lg {
 
 @font-face {
   font-family: Emerland;
-  src: url("/Kwality-2/assets/fonts/Emerland.otf");
+  src: url("/assets/fonts/Emerland.otf");
 }
 * {
   font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
