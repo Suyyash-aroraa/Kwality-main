@@ -12325,7 +12325,7 @@ fieldset:disabled .btn {
 }
 @font-face {
   font-family: Emerland;
-  src: url("/assets/fonts/Emerland.otf");
+  src: url("/Assets/fonts/Emerland.otf");
 }
 .navbar {
   font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
@@ -12355,7 +12355,7 @@ fieldset:disabled .btn {
 
 @font-face {
   font-family: Emerland;
-  src: url("/assets/fonts/Emerland.otf");
+  src: url("/Assets/fonts/Emerland.otf");
 }
 #landing {
   font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
@@ -12423,7 +12423,7 @@ fieldset:disabled .btn {
 
 @font-face {
   font-family: Emerland;
-  src: url("/assets/fonts/Emerland.otf");
+  src: url("/Assets/fonts/Emerland.otf");
 }
 .about {
   font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
@@ -12444,7 +12444,7 @@ fieldset:disabled .btn {
   width: 290px;
   height: 290px;
   border: 10px #22224f solid;
-  background-image: url("/Kwality-2/Assets/images/menu.png");
+  background-image: url("/Assets/images/menu.png");
   background-size: cover;
   position: relative;
   top: 6.5rem;
@@ -12498,7 +12498,7 @@ fieldset:disabled .btn {
   width: 290px;
   height: 290px;
   border: 10px #22224f solid;
-  background-image: url("/Kwality-2/Assets/images/Staff.png");
+  background-image: url("/Assets/images/Staff.png");
   background-size: cover;
   position: relative;
   background-position: center;
@@ -12564,7 +12564,7 @@ fieldset:disabled .btn {
     width: 210px !important;
     height: 210px !important;
     border: 10px #22224f solid;
-    background-image: url("/Kwality-2/Assets/images/Staff.png");
+    background-image: url("/Assets/images/Staff.png");
   }
   .left-image {
     display: flex;
@@ -12603,7 +12603,7 @@ fieldset:disabled .btn {
 }
 @font-face {
   font-family: Emerland;
-  src: url("/assets/fonts/Emerland.otf");
+  src: url("/Assets/fonts/Emerland.otf");
 }
 .menu {
   font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
@@ -12845,7 +12845,7 @@ fieldset:disabled .btn {
 
 @font-face {
   font-family: Emerland;
-  src: url("/assets/fonts/Emerland.otf");
+  src: url("/Assets/fonts/Emerland.otf");
 }
 * {
   font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
@@ -12864,3 +12864,536 @@ body {
 }
 
 /*# sourceMappingURL=style.css.map */
+  src: url("/Assets/fonts/Emerland.otf");
+}
+.navbar {
+  font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
+}
+.navbar nav {
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  height: 4rem;
+  align-items: center;
+}
+.navbar nav .menu {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.navbar nav .menu i {
+  filter: brightness(1000%);
+}
+.navbar nav .logo {
+  height: 100%;
+}
+
+@font-face {
+  font-family: Emerland;
+  src: url("/Assets/fonts/Emerland.otf");
+}
+#landing {
+  font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#landing .background-3 {
+  filter: brightness(1);
+  display: none;
+  width: 100%;
+  height: 100vh;
+  background-image: url("/Assets/images/bg-3.png");
+  background-position: center;
+}
+#landing .background-2 {
+  filter: brightness(1);
+  display: none;
+  width: 100%;
+  height: 100vh;
+  background-image: url("/Assets/images/bg-2.png");
+}
+#landing .background-1 {
+  filter: brightness(1);
+  width: 100%;
+  height: 100vh;
+  background-image: url("/Assets/images/bg-1.png");
+  background-position: left;
+}
+#landing .bg-img {
+  position: absolute;
+  top: 0;
+  background-size: cover;
+}
+#landing--text {
+  position: absolute;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  color: white;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+#landing--text .text {
+  word-spacing: 0.1rem;
+  line-height: 2.5rem;
+  font-size: 3rem;
+  font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
+}
+#landing--text .social {
+  margin-left: 2rem;
+  margin-top: 1rem;
+  font-size: 2rem;
+}
+#landing--text .social a {
+  margin-right: 0.5rem;
+  color: white;
+  width: fit-content;
+  border: 0;
+  background-color: transparent;
+}
+
+@font-face {
+  font-family: Emerland;
+  src: url("/Assets/fonts/Emerland.otf");
+}
+.about {
+  font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
+}
+.about .heading {
+  font-size: 3rem;
+  line-height: 2.3rem;
+  text-decoration: underline;
+  margin-bottom: 3rem;
+}
+.about .left-image {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+  position: relative;
+}
+.about .left-image--img {
+  width: 290px;
+  height: 290px;
+<<<<<<< HEAD
+  border: 10px #22224f solid;
+=======
+  border: 10px #22224F solid;
+>>>>>>> dbfef38fe45a7b20c0f94cc977f1b28ed6039a92
+  background-image: url("/Assets/images/menu.png");
+  background-size: cover;
+  position: relative;
+  top: 6.5rem;
+  left: 4rem;
+}
+.about .left-image .delicious {
+  font-size: 2.8rem;
+  z-index: 2;
+  position: absolute;
+  margin-left: 1rem;
+}
+.about .row {
+  justify-content: center;
+}
+.about .right-text {
+  margin-top: 4.5rem !important;
+}
+.about .left-reveal {
+  visibility: hidden;
+  transform: translateX(-100px);
+  transition: all 1s ease-in;
+}
+.about .right-reveal {
+  transform: translateX(80px);
+  visibility: hidden;
+  transition: all 1s ease-in;
+}
+.about .active {
+  transform: translate(0px, 0px);
+  visibility: visible;
+}
+.about .staff {
+  font-size: 2.8rem;
+  z-index: 2;
+  position: absolute;
+  margin-left: 1rem;
+}
+.about .staff-area {
+  margin-top: 7rem !important;
+  flex-direction: row-reverse;
+  justify-content: center !important;
+}
+.about .staff-area .text {
+  margin-top: 8rem;
+}
+.about .staff-area .right-image {
+  display: flex;
+  justify-content: center;
+}
+.about .staff-area .right-image--img {
+  width: 290px;
+  height: 290px;
+<<<<<<< HEAD
+  border: 10px #22224f solid;
+=======
+  border: 10px #22224F solid;
+>>>>>>> dbfef38fe45a7b20c0f94cc977f1b28ed6039a92
+  background-image: url("/Assets/images/Staff.png");
+  background-size: cover;
+  position: relative;
+  background-position: center;
+  top: 6.5rem;
+  right: 4rem;
+}
+
+@media (max-width: 992px) {
+  .about .row {
+    flex-wrap: nowrap;
+  }
+  .about .right-image {
+    justify-content: right;
+  }
+  .about .staff-area .text {
+    margin-top: 3.5rem;
+    margin-right: 2rem;
+  }
+  .about .left-image {
+    justify-content: left;
+  }
+  .about .right-text {
+    margin-left: 2rem;
+  }
+  .about .right-reveal,
+  .about .left-reveal {
+    transform: translateY(100px);
+    visibility: hidden;
+    transition: all 0.5s ease-in;
+  }
+  .about .active {
+    transform: translate(0px, 0px);
+    visibility: visible;
+  }
+}
+@media (max-width: 770px) {
+  .about .row {
+    flex-wrap: wrap;
+  }
+  .about .staff-area .text {
+    margin-top: 7.5rem !important;
+  }
+  .about .left-image {
+    justify-content: center !important;
+  }
+  .about .right-image {
+    justify-content: center !important;
+  }
+  .about .delicious {
+    margin: 0;
+  }
+  .about .right-text {
+    padding: 0;
+    margin-right: 1rem;
+  }
+}
+@media (max-width: 480px) {
+  .right-image {
+    display: flex;
+    justify-content: center;
+  }
+  .right-image--img {
+    width: 210px !important;
+    height: 210px !important;
+<<<<<<< HEAD
+    border: 10px #22224f solid;
+=======
+    border: 10px #22224F solid;
+>>>>>>> dbfef38fe45a7b20c0f94cc977f1b28ed6039a92
+    background-image: url("/Assets/images/Staff.png");
+  }
+  .left-image {
+    display: flex;
+    width: 220px;
+    height: 220px;
+  }
+  .left-image--img {
+    width: 210px !important;
+    height: 210px !important;
+    border: 10px #22224f solid;
+  }
+  .gray-block {
+    width: 220px !important;
+    height: 220px !important;
+  }
+  .staff {
+    font-size: 2rem !important;
+  }
+}
+@media (max-width: 360px) {
+  .left-image {
+    justify-content: left !important;
+  }
+  .about .right-image {
+    justify-content: right !important;
+  }
+  .staff-area {
+    justify-content: right !important;
+  }
+  .delicious {
+    justify-content: left !important;
+  }
+  .right-text {
+    margin-left: 0 !important;
+  }
+}
+@font-face {
+  font-family: Emerland;
+  src: url("/Assets/fonts/Emerland.otf");
+}
+.menu {
+  font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
+  margin-top: 5rem;
+  margin-bottom: 4rem;
+}
+.menu .heading {
+  font-size: 3rem;
+  line-height: 2.3rem;
+  text-decoration: underline;
+  margin-bottom: 3rem;
+}
+.menu .menu-image {
+  position: relative;
+  justify-content: center;
+}
+.menu .menu-image img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  border: 1rem solid #22224f;
+}
+.menu-content {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+.menu .left-reveal {
+  transform: translate(-50px, 0px);
+  visibility: hidden;
+  transition: all 0.5s ease-in;
+}
+.menu .right-reveal {
+  transform: translate(50px, 0px);
+  visibility: hidden;
+  transition: all 0.5s ease-in;
+}
+.menu .active {
+  transform: translate(0px, 0px);
+  visibility: visible;
+}
+.menu .menu-btn-container {
+  justify-content: left;
+}
+.menu .menu-btn-container .menu-btn {
+  width: fit-content;
+  background-color: transparent;
+  border: 0;
+  border-left: 2px black solid;
+  border-right: 2px black solid;
+  font-size: 1.7rem;
+}
+
+@media (max-width: 1100px) {
+  #menu .right-reveal {
+    transform: translate(0px, 50px);
+    visibility: hidden;
+    transition: all 0.5s ease-in;
+  }
+  #menu .active {
+    transform: translate(0px, 0px);
+    visibility: visible;
+  }
+}
+@media (max-width: 766px) {
+  #menu .menu-image {
+    display: flex;
+  }
+  #menu .menu-image img {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: translate(0, 0);
+  }
+}
+@media (min-width: 1200px) {
+  #menu .menu-image img {
+    width: 60%;
+  }
+}
+@media (min-width: 1200px) {
+  #menu {
+    margin-top: 9rem;
+  }
+  #menu .heading {
+    margin-bottom: 5rem;
+  }
+}
+.navbar .menu.btn {
+  margin: 0 !important;
+}
+
+.contact .heading {
+  margin: 0.5rem;
+}
+.contact .heading .subtext {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.6);
+}
+.contact .heading .subtext .line {
+  margin-left: 3px;
+  height: 2px;
+  width: 4rem;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.contact .heading .main-text {
+  font-size: 2.8rem;
+}
+.contact .contact-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.contact .contact-btn-button {
+  width: 90%;
+  margin-bottom: 10px;
+  height: 150px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+.contact .contact-btn-button:hover {
+  box-shadow: 0px 0 40px rgba(0, 0, 0, 0.9);
+}
+.contact .contact-btn-button a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+}
+.contact .contact-btn .gutter-2 {
+  justify-content: center;
+  align-items: center !important;
+  margin-bottom: 1rem;
+}
+
+.location {
+  margin-top: 10rem;
+}
+.location .main-text {
+  font-size: 3rem;
+}
+.location .sub-text {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.navmenu {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  display: none;
+}
+.navmenu-box {
+  border-radius: 12px;
+  width: 250px;
+  height: 500px;
+  background-color: #22224f;
+  position: absolute;
+  right: 10px;
+  top: 1rem;
+}
+.navmenu-box img {
+  position: absolute;
+  right: 20px;
+}
+.navmenu-box .navmenu-links {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 70%;
+}
+.navmenu-box .navmenu-links a {
+  text-decoration: none;
+  color: white;
+}
+
+.footer {
+  margin-top: 4rem;
+  margin-bottom: 1rem;
+}
+.footer .line {
+  width: 90%;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.6);
+  margin-left: 5%;
+}
+.footer--content {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 2rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+.footer .text {
+  font-size: 0.6rem;
+  margin-top: 3px;
+}
+
+@media (min-width: 900px) {
+  .footer .text {
+    font-size: 1rem;
+  }
+}
+.loading-screen {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  z-index: 20;
+  background-color: black;
+}
+
+.loading-screen-1 {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  z-index: 20;
+  background-color: black;
+}
+
+@font-face {
+  font-family: Emerland;
+  src: url("/Assets/fonts/Emerland.otf");
