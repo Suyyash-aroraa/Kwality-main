@@ -12325,7 +12325,7 @@ fieldset:disabled .btn {
 }
 @font-face {
   font-family: Emerland;
-  src: url("/Kwality-2/assets/fonts/Emerland.otf");
+  src: url("/assets/fonts/Emerland.otf");
 }
 .navbar {
   font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
@@ -12355,7 +12355,7 @@ fieldset:disabled .btn {
 
 @font-face {
   font-family: Emerland;
-  src: url("/Kwality-2/assets/fonts/Emerland.otf");
+  src: url("/assets/fonts/Emerland.otf");
 }
 #landing {
   font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
@@ -12423,7 +12423,7 @@ fieldset:disabled .btn {
 
 @font-face {
   font-family: Emerland;
-  src: url("/Kwality-2/assets/fonts/Emerland.otf");
+  src: url("/assets/fonts/Emerland.otf");
 }
 .about {
   font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
@@ -12444,7 +12444,7 @@ fieldset:disabled .btn {
   width: 290px;
   height: 290px;
   border: 10px #22224f solid;
-  background-image: url("/Assets/images/menu.png");
+  background-image: url("/Kwality-2/Assets/images/menu.png");
   background-size: cover;
   position: relative;
   top: 6.5rem;
@@ -12498,7 +12498,7 @@ fieldset:disabled .btn {
   width: 290px;
   height: 290px;
   border: 10px #22224f solid;
-  background-image: url("/Assets/images/Staff.png");
+  background-image: url("/Kwality-2/Assets/images/Staff.png");
   background-size: cover;
   position: relative;
   background-position: center;
@@ -12564,7 +12564,7 @@ fieldset:disabled .btn {
     width: 210px !important;
     height: 210px !important;
     border: 10px #22224f solid;
-    background-image: url("/Assets/images/Staff.png");
+    background-image: url("/Kwality-2/Assets/images/Staff.png");
   }
   .left-image {
     display: flex;
@@ -12603,7 +12603,7 @@ fieldset:disabled .btn {
 }
 @font-face {
   font-family: Emerland;
-  src: url("/Kwality-2/assets/fonts/Emerland.otf");
+  src: url("/assets/fonts/Emerland.otf");
 }
 .menu {
   font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
@@ -12845,7 +12845,7 @@ fieldset:disabled .btn {
 
 @font-face {
   font-family: Emerland;
-  src: url("/Kwality-2/assets/fonts/Emerland.otf");
+  src: url("/assets/fonts/Emerland.otf");
 }
 * {
   font-family: Emerland, "Cormorant Garamond", "Times New Roman", Times, serif;
