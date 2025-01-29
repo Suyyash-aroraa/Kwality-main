@@ -1,6 +1,10 @@
 User-agent: *
-Disallow: /admin/
-Disallow: /login/
-Disallow: /cart/
+Disallow: /Assets/
+Disallow: /index.js
+Disallow: /loading-screen/
 
-Sitemap: https://www.kwality.co.in/sitemap.xml
+Allow: /Assets/images/
+Allow: /Assets/css/
+Allow: /gallery.html
+
+Sitemap: https://kwality.co.in/sitemap.xml
