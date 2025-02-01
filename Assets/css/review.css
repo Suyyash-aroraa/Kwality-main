@@ -1,4 +1,4 @@
-body {
+7body {
   background-color: #0f101a;
   color: aliceblue;
   margin: 20px;
@@ -63,5 +63,5 @@ h3 {
 }
 
 .great-btn{
-width: 100%;
+width: 100% !important;
 }
