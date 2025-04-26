@@ -131,31 +131,86 @@ body {
   padding: 2rem 0 6rem;
 }
 
+.loading-screen {
+  display: none !important;
+}
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+  align-items: stretch;
 }
-
 .gallery-item {
-  position: relative;
+  background: #23234a;
+  border-radius: 18px;
   overflow: hidden;
-  border-radius: 8px;
-  box-shadow: var(--box-shadow);
-  cursor: pointer;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  aspect-ratio: 1/1;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  transition: transform 0.25s, box-shadow 0.25s;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
-
-.gallery-item.landscape {
-  grid-column: span 2;
+.gallery-item img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 18px 18px 0 0;
+  transition: transform 0.3s;
 }
-
-.gallery-item.portrait {
-  grid-row: span 2;
+.gallery-item .item-overlay {
+  padding: 1.2rem 1rem 1.5rem 1rem;
+  background: linear-gradient(0deg, #23234a 90%, rgba(35,35,74,0.7) 100%);
+  color: #fff;
+  border-radius: 0 0 18px 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
-
+.gallery-item .item-title {
+  font-family: var(--font-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.gallery-item .item-desc {
+  font-family: var(--font-secondary);
+  font-size: 0.95rem;
+  color: #e0e0e0;
+}
+.gallery-item:hover {
+  transform: translateY(-6px) scale(1.025);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+.gallery-item img:hover {
+  transform: scale(1.04);
+}
+@media (max-width: 900px) {
+  .gallery-grid {
+    gap: 1.2rem;
+  }
+  .gallery-item img {
+    height: 170px;
+  }
+}
+@media (max-width: 600px) {
+  .gallery-header {
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 1.2rem 0 0.7rem 0;
+  }
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .gallery-item img {
+    height: 140px;
+  }
+  .gallery-item .item-overlay {
+    padding: 0.8rem 0.7rem 1rem 0.7rem;
+  }
+}
 .gallery-item:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
