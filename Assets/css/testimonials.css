@@ -1,0 +1,239 @@
+/* Testimonials Section - Kwality Restaurant */
+
+.testimonials {
+  background-color: var(--primary-color);
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonials::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.85));
+  z-index: 1;
+}
+
+.testimonials .container {
+  position: relative;
+  z-index: 2;
+}
+
+.testimonials .heading {
+  color: var(--text-color);
+  font-family: var(--font-primary);
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.testimonials .heading::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background-color: var(--accent-color);
+}
+
+.testimonial-slider {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.testimonial-slide {
+  display: none;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+  margin: 0 auto;
+  max-width: 800px;
+  text-align: center;
+  transition: all 0.5s ease;
+}
+
+.testimonial-slide.active {
+  display: block;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.testimonial-content {
+  font-family: var(--font-primary);
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: var(--text-color);
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.testimonial-content::before,
+.testimonial-content::after {
+  content: '"';
+  font-family: Georgia, serif;
+  font-size: 3rem;
+  color: var(--accent-color);
+  opacity: 0.5;
+  position: absolute;
+}
+
+.testimonial-content::before {
+  top: -20px;
+  left: -10px;
+}
+
+.testimonial-content::after {
+  bottom: -40px;
+  right: -10px;
+}
+
+.testimonial-author {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.author-name {
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--accent-color);
+  margin-bottom: 0.3rem;
+}
+
+.author-rating {
+  color: var(--accent-color);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.author-date {
+  font-family: var(--font-secondary);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.testimonial-nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.testimonial-nav button {
+  background-color: transparent;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  margin: 0 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.testimonial-nav button:hover {
+  color: var(--accent-color);
+}
+
+.testimonial-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin: 0 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background-color: var(--accent-color);
+  transform: scale(1.2);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .testimonials {
+    padding: 4rem 0;
+  }
+  
+  .testimonials .heading {
+    font-size: 2rem;
+  }
+  
+  .testimonial-content {
+    font-size: 1rem;
+  }
+  
+  .testimonial-content::before,
+  .testimonial-content::after {
+    font-size: 2rem;
+  }
+  
+  .testimonial-content::before {
+    top: -15px;
+    left: -5px;
+  }
+  
+  .testimonial-content::after {
+    bottom: -30px;
+    right: -5px;
+  }
+}
+
+@media (max-width: 576px) {
+  .testimonials {
+    padding: 3rem 0;
+  }
+  
+  .testimonials .heading {
+    font-size: 1.8rem;
+  }
+  
+  .testimonial-slide {
+    padding: 1.5rem;
+  }
+  
+  .testimonial-content {
+    font-size: 0.9rem;
+  }
+  
+  .author-name {
+    font-size: 1rem;
+  }
+  
+  .author-rating {
+    font-size: 1rem;
+  }
+  
+  .author-date {
+    font-size: 0.8rem;
+  }
+}

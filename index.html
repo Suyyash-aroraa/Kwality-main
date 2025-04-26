@@ -9,7 +9,8 @@
       name="description"
       content="Welcome to Kwality! Discover our exceptional products and services designed to deliver quality and satisfaction. Explore our menu, gallery, and more today!"
     />
-    <link rel="stylesheet" href="./Assets/css/style.css" />
+    <link rel="stylesheet" href="./Assets/css/modern-style.css" />
+    <link rel="stylesheet" href="./Assets/css/testimonials.css" />
     <script
       src="https://kit.fontawesome.com/4a9d0de6bd.js"
       crossorigin="anonymous"
@@ -17,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="icon" href="./Assets/images/icon.png" />
@@ -58,6 +59,7 @@
         display: none !important;
         visibility: hidden !important;
       }
+      
     </style>
   </head>
   <body>
@@ -72,7 +74,8 @@
 
     <div class="loading-screen" style="display: none;">
       <div class="display-6 text-white">
-        Kwality Restaurant, Gwalior
+        <img src="./Assets/images/logo-white 1.png" alt="Kwality Restaurant Logo" width="200">
+        <div class="loader"></div>
       </div>
     </div>
 
@@ -85,37 +88,34 @@
             src="https://img.icons8.com/?size=512&id=G73qnboyHDjl&format=png"
             class="icon"
             width="25px"
-            alt=""
+            alt="Close menu"
           />
         </div>
         <div class="navmenu-links">
           <a href="#landing" class="navmenu-link"><h2>Home</h2></a>
-          <a href="#about" class="navmenu-link"><h2>About</h2></a>
-          <a href="#menu" class="navmenu-link"><h2>Menu</h2></a>
+          <a href="#about" class="navmenu-link"><h2>About Us</h2></a>
+          <a href="#menu" class="navmenu-link"><h2>Our Menu</h2></a>
+          <a href="#testimonials" class="navmenu-link"><h2>Testimonials</h2></a>
           <a href="#contact" class="navmenu-link"><h2>Contact</h2></a>
-          <a href="/gallery.html" class="navmenu-link"><h2>Gallery</h2></a>
+          <a href="./modern-gallery.html" class="navmenu-link"><h2>Gallery</h2></a>
         </div>
       </div>
     </section>
     <!-- Nav Bar -->
-    <section
-      class="navbar"
-      style="width: 100%; position: absolute; top: 0; left: 0;"
-    >
+    <section class="navbar">
       <div class="container">
         <nav>
           <img
             class="logo"
             src="./Assets/images/logo-white 1.png"
-            alt=""
+            alt="Kwality Restaurant Logo"
             draggable="false"
           />
 
           <div class="menu btn">
             <img
               src="https://img.icons8.com/?size=512&id=36389&format=png"
-              alt=""
-              width="25px"
+              alt="Menu"
               class="icon"
             />
           </div>
@@ -124,8 +124,6 @@
     </section>
 
     <!-- Landing -->
-    <div style="height: 105vh;"></div>
-
     <section id="landing">
       <div class="background-1 bg-img" style="display: none;"></div>
       <div class="background-2 bg-img" style="display: none;"></div>
@@ -176,15 +174,12 @@
     <section class="about" id="about">
       <div class="container">
         <div class="row text-center">
-          <h3 class="heading">About Us</h3>
+          <h3 class="heading">Our Legacy</h3>
         </div>
-        <div class="row mt-3 delicious">
+        <div class="row mt-5 delicious">
           <div class="left-reveal left-image col-md-6 col-lg-6">
-            <div
-              class="gray-block"
-              style="width: 300px; height: 300px; background-color: #d9d9d9;"
-            >
-              <h3 class="pl-3 delicious">
+            <div class="gray-block">
+              <h3 class="delicious">
                 Savory <br />
                 Delights
               </h3>
@@ -192,9 +187,9 @@
             </div>
           </div>
 
-          <div class="right-reveal right-text col-md-6 col-lg-6 mt-5">
+          <div class="right-reveal right-text col-md-6 col-lg-6 mt-4">
             <p class="text">
-              Nestled in Gwalior, Central India, Kwality Restaurant perfectly
+              Nestled in the heart of Gwalior, Central India, Kwality Restaurant perfectly
               embodies the city's rich history and contemporary charm. Our
               essence is personalized service, catering to individual
               preferences, and a commitment to diverse needs. Experience
@@ -203,31 +198,25 @@
             </p>
           </div>
         </div>
-        <div class="row mt-3 staff-area">
-          <div class="right-reveal right-image col-md-6 col-lg-6">
-            <div
-              class="gray-block"
-              style="width: 300px; height: 300px; background-color: #d9d9d9;"
-            >
-              <h3 class="pl-3 staff">
-                Unparalleled <br />
-                Service
-              </h3>
-              <div class="right-image--img"></div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-6 left-reveal">
+        <div class="row mt-5 staff-area">
+          <div class="left-reveal left-text col-md-6 col-lg-6">
             <p class="text">
               Kwality Restaurant's fame extends beyond Gwalior, celebrated
               throughout India for its exotic spices, delicate herbs, and pure
               vegetables. Explore authentic North Indian and Indian Fusion
               Chinese cuisine, curated from the finest ingredients. At Kwality,
               we're dedicated to an authentic dining experience, where attentive
-              service complements outstanding, fresh, flavorful dishes. Our
-              restaurant exudes vibrancy, offers reasonable pricing, prompt
-              service, and a friendly, dedicated staff. Our team eagerly awaits
-              serving you.
+              service complements outstanding, fresh, flavorful dishes.
             </p>
+          </div>
+          <div class="right-reveal right-image col-md-6 col-lg-6">
+            <div class="gray-block">
+              <h3 class="staff">
+                Unparalleled <br />
+                Service
+              </h3>
+              <div class="right-image--img"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -260,6 +249,13 @@
                 style="text-decoration: none; color: #000;"
               >
                 &ThickSpace; VIEW &ThickSpace;MENU &ThickSpace;</a
+              >
+              <a
+                href="./modern-gallery.html"
+                class="menu-btn m-4 btn"
+                style="text-decoration: none; color: #000;"
+              >
+                &ThickSpace; VIEW &ThickSpace;GALLERY &ThickSpace;</a
               >
             </div>
           </div>
@@ -328,6 +324,27 @@
 
     <!-- Location -->
 
+       <!-- Testimonials -->
+       <section class="testimonials" id="testimonials">
+        <div class="container">
+          <h3 class="heading">What Our Guests Say</h3>
+          
+          <div class="testimonial-slider">
+            <!-- Testimonial slides will be inserted by JavaScript -->
+          </div>
+          
+          <div class="testimonial-nav">
+            <button class="prev-btn">❮</button>
+            <button class="next-btn">❯</button>
+          </div>
+          
+          <div class="testimonial-dots">
+            <!-- Dots will be inserted by JavaScript -->
+          </div>
+        </div>
+      </section>
+  
+
     <section class="location p-1" id="location">
       <div class="container">
         <div class="row">
@@ -380,6 +397,7 @@
       </div>
     </section>
 
+ 
     <!-- Footer -->
 
     <section class="footer">
@@ -438,6 +456,29 @@
       referrerpolicy="no-referrer"
     ></script>
 
-    <script src="index.js"></script>
+    <script src="./index.js"></script>
+    <script src="./testimonials.js"></script>
+    <script>
+      // Modern animations and interactions
+      document.addEventListener('DOMContentLoaded', function() {
+        // Show loading screen
+        $('.loading-screen').fadeIn();
+        
+        // Hide loading screen after 2 seconds
+        setTimeout(function() {
+          $('.loading-screen').fadeOut();
+        }, 2000);
+        
+        // Add scrolled class to navbar on scroll
+        window.addEventListener('scroll', function() {
+          const navbar = document.querySelector('.navbar');
+          if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+          } else {
+            navbar.classList.remove('scrolled');
+          }
+        });
+      });
+    </script>
   </body>
 </html>

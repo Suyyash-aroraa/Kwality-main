@@ -1,20 +1,21 @@
+// Modern background image slider with smooth transitions
 const imageList = ['.background-1', '.background-2', '.background-3'];
 var bgIndex = 0;
-var bgChange = setInterval(()=>{
-    if (bgIndex>2){
+var bgChange = setInterval(() => {
+    if (bgIndex > 2) {
         bgIndex = 0;
     }
-    let x = bgIndex+1;
-    if (x>2){
-        x=0;
+    let nextIndex = bgIndex + 1;
+    if (nextIndex > 2) {
+        nextIndex = 0;
     }
     
-    console.log(bgIndex ,  x);
-    $(imageList[bgIndex]).fadeOut();
-    $(imageList[x]).fadeIn();
+    // Smoother transitions with longer duration
+    $(imageList[bgIndex]).fadeOut(1200);
+    $(imageList[nextIndex]).fadeIn(1200);
     
-    bgIndex++
-}, '2300')
+    bgIndex++;
+}, 5000) // Longer interval for more elegant transitions
 
 
 // Reveal on scroll
@@ -50,30 +51,39 @@ function reveal(){
 
 // menu
 
-const navMenu = document.querySelector('.navmenu')
-var menuOpen = false;
-document.querySelector('.menu').addEventListener('click', ()=>{
-    
-        menuOpen = true;
-        $('.navmenu').fadeIn();
-        console.log('work')
-    
-})
-document.querySelector('.cross-btn').addEventListener('click', ()=>{
-    
-        menuOpen = true;
-        $('.navmenu').fadeOut();
-        console.log('work')
-    
-})
+// Modern UI interactions
+const navMenu = document.querySelector('.navmenu');
+const navbar = document.querySelector('.navbar');
+
+// Add scrolled class to navbar on scroll for elegant transition effect
+window.addEventListener('scroll', function() {
+  if (window.scrollY > 50) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+});
+
+// Menu interactions with smooth animations
+$('.menu').click(function() {
+  $('.navmenu').fadeIn(300);
+  $('.navmenu-box').animate({opacity: 1, right: '10px'}, 400);
+});
+
+$('.cross-btn').click(function() {
+  $('.navmenu-box').animate({opacity: 0, right: '-50px'}, 300, function() {
+    $('.navmenu').fadeOut(200);
+  });
+});
 
 const navMenuLink = document.querySelectorAll('.navmenu-link');
 
-for (let i = 0; i < navMenuLink.length; i++){
-    navMenuLink[i].addEventListener('click', ()=>{
-        $('.navmenu').fadeOut();
-        console.log('works ig')
-    })
+for (let i = 0; i < navMenuLink.length; i++) {
+  navMenuLink[i].addEventListener('click', () => {
+    $('.navmenu-box').animate({opacity: 0, right: '-50px'}, 300, function() {
+      $('.navmenu').fadeOut(200);
+    });
+  });
 }
 
 // Loading screen

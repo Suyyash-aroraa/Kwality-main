@@ -1,0 +1,215 @@
+/* Modern Luxury Review Page Styles */
+
+:root {
+  --primary-color: #22224F;
+  --accent-color: #d4af37; /* Gold accent for luxury feel */
+  --text-color: #ffffff;
+  --transition-speed: 0.3s;
+  --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --border-radius: 8px;
+}
+
+body {
+  font-family: 'Cormorant Garamond', serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(34, 34, 79, 0.95), rgba(34, 34, 79, 0.8));
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../images/bg-3.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+.logo {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 4rem;
+  margin-bottom: 2rem;
+}
+
+.main-review {
+  background-color: rgba(34, 34, 79, 0.85);
+  border-radius: var(--border-radius);
+  padding: 3rem;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: var(--box-shadow);
+  border-left: 3px solid var(--accent-color);
+  backdrop-filter: blur(10px);
+}
+
+.main-review h2 {
+  color: var(--text-color);
+  font-size: 2.2rem;
+  margin-top: 0;
+  margin-bottom: 2.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.btn {
+  background-color: transparent;
+  color: var(--text-color);
+  border: 2px solid var(--accent-color);
+  border-radius: 50px;
+  padding: 0.8rem 2.5rem;
+  margin: 0.5rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  min-width: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn h3 {
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 2;
+  transition: all var(--transition-speed);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: var(--accent-color);
+  transition: all var(--transition-speed);
+  z-index: 1;
+}
+
+.btn:hover::before {
+  left: 0;
+}
+
+.btn:hover {
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+}
+
+.btn:hover h3 {
+  color: var(--primary-color);
+}
+
+.great-btn {
+  margin-bottom: 1rem;
+}
+
+/* Not Great Options Section */
+.options {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(5px);
+  display: none;
+}
+
+.options > div {
+  background-color: rgba(34, 34, 79, 0.95);
+  border-radius: var(--border-radius);
+  padding: 3rem;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  box-shadow: var(--box-shadow);
+  border-left: 3px solid var(--accent-color);
+}
+
+.options h2 {
+  color: var(--text-color);
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 2.5rem;
+  font-weight: 600;
+}
+
+.options .icon {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  cursor: pointer;
+  transition: transform var(--transition-speed);
+  filter: brightness(1000%);
+}
+
+.options .icon:hover {
+  transform: rotate(90deg);
+}
+
+.options .main-btn {
+  background-color: var(--accent-color);
+}
+
+.options .main-btn h3 {
+  color: var(--primary-color);
+}
+
+.options .main-btn::before {
+  background-color: transparent;
+}
+
+.options .main-btn:hover {
+  background-color: transparent;
+}
+
+.options .main-btn:hover h3 {
+  color: var(--text-color);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .main-review {
+    padding: 2rem;
+  }
+  
+  .main-review h2 {
+    font-size: 1.8rem;
+  }
+  
+  .btn {
+    padding: 0.7rem 1.5rem;
+    min-width: 180px;
+  }
+  
+  .options > div {
+    padding: 2rem;
+  }
+  
+  .options h2 {
+    font-size: 1.6rem;
+  }
+}
