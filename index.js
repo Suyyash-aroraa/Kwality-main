@@ -51,17 +51,28 @@ function reveal(){
 
 // menu
 
-// Modern UI interactions
-const navMenu = document.querySelector('.navmenu');
-const navbar = document.querySelector('.navbar');
+document.addEventListener('DOMContentLoaded', function() {
+    // Nav Menu
+    const menu = document.querySelector('.menu');
+    const navmenu = document.querySelector('.navmenu');
+    const navmenuBox = document.querySelector('.navmenu-box');
+    const crossBtn = document.querySelector('.cross-btn');
+    const navmenuLinks = document.querySelectorAll('.navmenu-link');
 
-// Add scrolled class to navbar on scroll for elegant transition effect
-window.addEventListener('scroll', function() {
-  if (window.scrollY > 50) {
-    navbar.classList.add('scrolled');
-  } else {
-    navbar.classList.remove('scrolled');
-  }
+    // Menu Section Animations
+    const menuImage = document.querySelector('.menu-image');
+    const menuContent = document.querySelector('.menu-content');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            }
+        });
+    });
+
+    observer.observe(menuImage);
+    observer.observe(menuContent);
 });
 
 // Menu interactions with smooth animations

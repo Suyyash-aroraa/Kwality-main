@@ -165,7 +165,7 @@ body {
 
 .cross-btn .icon {
   width: 25px;
-  filter: brightness(1000%);
+  filter: invert(1);
   transition: transform var(--transition-speed);
 }
 
@@ -400,11 +400,28 @@ body {
   color: var(--text-color);
 }
 
+.menu-image {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 1s;
+}
+
+.menu-image.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .menu-image img {
   width: 100%;
   border-radius: 5px;
   box-shadow: var(--box-shadow);
   transition: transform var(--transition-speed);
+}
+
+@media (max-width: 768px) {
+  .menu-image {
+    transform: translateY(30px);
+  }
 }
 
 .menu-image img:hover {
@@ -415,6 +432,20 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 1s;
+}
+
+.menu-content.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .menu-content {
+    transform: translateY(30px);
+  }
 }
 
 .menu-btn-container {
@@ -575,20 +606,13 @@ body {
 .right-reveal {
   opacity: 0;
   transition: all 1s ease;
-}
-
-.left-reveal {
-  transform: translateX(-100px);
-}
-
-.right-reveal {
-  transform: translateX(100px);
+  transform: translateY(100px);
 }
 
 .left-reveal.active,
 .right-reveal.active {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
 /* Loading Screen */
