@@ -3,13 +3,60 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize variables
     const galleryItems = document.querySelectorAll('.gallery-item');
-    const lightbox = document.querySelector('.lightbox');
-    const lightboxImage = document.querySelector('.lightbox-image');
-    const lightboxClose = document.querySelector('.lightbox-close');
-    const lightboxNext = document.querySelector('.lightbox-next');
-    const lightboxPrev = document.querySelector('.lightbox-prev');
     const loadingScreen = document.querySelector('.loading-screen');
     const fadeElements = document.querySelectorAll('.fade-in');
+    
+    // Add hover effects to gallery items
+    galleryItems.forEach(item => {
+        item.addEventListener('mouseenter', handleItemHover);
+        item.addEventListener('mouseleave', handleItemLeave);
+        item.addEventListener('click', handleItemClick);
+    });
+    
+    /**
+     * Handle mouse enter on gallery items
+     */
+    function handleItemHover(e) {
+        const item = e.currentTarget;
+        const otherItems = Array.from(galleryItems).filter(i => i !== item);
+        
+        // Add hover effect to current item
+        item.classList.add('hover');
+        
+        // Slightly dim other items
+        otherItems.forEach(otherItem => {
+            otherItem.classList.add('dimmed');
+        });
+    }
+    
+    /**
+     * Handle mouse leave on gallery items
+     */
+    function handleItemLeave(e) {
+        // Remove all hover and dim effects
+        galleryItems.forEach(item => {
+            item.classList.remove('hover', 'dimmed');
+        });
+    }
+    
+    /**
+     * Handle click on gallery items (for mobile)
+     */
+    function handleItemClick(e) {
+        const item = e.currentTarget;
+        
+        // Toggle active class for mobile devices
+        if (window.innerWidth <= 768) {
+            if (item.classList.contains('active-mobile')) {
+                item.classList.remove('active-mobile');
+            } else {
+                // Remove from all items first
+                galleryItems.forEach(i => i.classList.remove('active-mobile'));
+                // Add to current item
+                item.classList.add('active-mobile');
+            }
+        }
+    }
     
     let currentImageIndex = 0;
     const galleryImages = [];
