@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waitlist Position</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .position-display {
+            text-align: center;
+            padding: 40px;
+            margin-top: 50px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .position {
+            font-size: 72px;
+            font-weight: bold;
+            color: #3498db;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+        }
+        .loading {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        .error {
+            color: #e74c3c;
+            font-weight: 500;
+        }
+        .phone-input {
+            padding: 12px 15px;
+            font-size: 16px;
+            width: 250px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            transition: border 0.3s ease;
+        }
+        .phone-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        @media (max-width: 600px) {
+            .position-display {
+                padding: 20px;
+                margin-top: 20px;
+            }
+            .position {
+                font-size: 48px;
+            }
+            .phone-input {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="position-display">
+            <h1>Check Your Position</h1>
+            <input type="tel" id="phoneInput" class="phone-input" placeholder="Enter your phone number" pattern="[0-9]{10}" required>
+            <div id="positionDisplay" class="position">-</div>
+            <p id="status" class="loading">Enter your phone number to check position</p>
+        </div>
+    </div>
+
+    <script>
+        // GitHub repository configuration
+        const REPO_NAME = 'Suyyash-aroraa/datWaitlist';  // Replace with your repository name
+        const phoneInput = document.getElementById('phoneInput');
+        const positionDisplay = document.getElementById('positionDisplay');
+        const statusElement = document.getElementById('status');
+        let currentPosition = null;
+
+        async function fetchPosition(retryCount = 0) {
+            if (!phoneInput.value) return;
+            
+            try {
+                statusElement.textContent = 'Checking position...';
+                statusElement.className = 'loading';
+
+                // Add cache-busting parameter to bypass GitHub's caching
+                const timestamp = Date.now();
+                const random = Math.floor(Math.random() * 10000);
+                const response = await fetch("./position_data.txt")
+                if (!response.ok) {
+                    if (retryCount < 3) {
+                        const delay = Math.pow(2, retryCount) * 1000;
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        return fetchPosition(retryCount + 1);
+                    }
+                    throw new Error('Failed to fetch position data after multiple attempts');
+                }
+                
+                const text = await response.text();
+                const positions = new Map(
+                    text.split('\n')
+                        .filter(line => line.trim())
+                        .map(line => line.split(','))
+                );
+
+                const position = positions.get(phoneInput.value);
+                if (position) {
+                    positionDisplay.textContent = position;
+                    statusElement.textContent = 'Your current position in line';
+                    statusElement.className = '';
+                } else {
+                    positionDisplay.textContent = '-';
+                    statusElement.textContent = 'Phone number not found in waitlist';
+                    statusElement.className = 'error';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                positionDisplay.textContent = '-';
+                statusElement.textContent = 'Error checking position. Please try again.';
+                statusElement.className = 'error';
+            }
+        }
+
+        phoneInput.addEventListener('input', () => {
+            if (phoneInput.value.length === 10) {
+                fetchPosition();
+            } else {
+                positionDisplay.textContent = '-';
+                statusElement.textContent = 'Enter your phone number to check position';
+                statusElement.className = '';
+            }
+        });
+
+        // Improved refresh with retry logic and exponential backoff
+        let retryCount = 0;
+        const maxRetries = 3;
+        const baseDelay = 2000;
+        
+        async function refreshWithRetry() {
+            try {
+                await fetchPosition();
+                retryCount = 0;
+            } catch (error) {
+                retryCount++;
+                if (retryCount <= maxRetries) {
+                    const delay = baseDelay * Math.pow(2, retryCount - 1);
+                    setTimeout(refreshWithRetry, delay);
+                }
+            }
+        }
+        
+        // Refresh position every 3 seconds with retry capability
+        setInterval(() => {
+                refreshWithRetry();
+        }, 3000);
+    </script>
+</body>
+</html>
