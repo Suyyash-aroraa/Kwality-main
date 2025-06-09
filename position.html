@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waitlist Position</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <title>Kwality Restaurant | Waitlist Position</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f5f7fa;
             margin: 0;
             padding: 0;
+            color: #333;
         }
         .container {
             max-width: 800px;
@@ -57,6 +57,15 @@
             outline: none;
             border-color: #3498db;
         }
+        .restaurant-logo {
+            margin-bottom: 20px;
+            max-width: 150px;
+        }
+        .refresh-indicator {
+            font-size: 12px;
+            color: #95a5a6;
+            margin-top: 20px;
+        }
         @media (max-width: 600px) {
             .position-display {
                 padding: 20px;
@@ -75,23 +84,25 @@
 <body>
     <div class="container">
         <div class="position-display">
-            <h1>Check Your Position</h1>
-            <input type="tel" id="phoneInput" class="phone-input" placeholder="Enter your phone number" pattern="[0-9]{10}" required>
+            <h1>Kwality Restaurant Waitlist</h1>
+            <p>Enter your phone number to check your current position in the waitlist</p>
+            <input type="tel" id="phoneInput" class="phone-input" placeholder="Enter your phone number" pattern="[0-9]{10}" maxlength="10" required>
             <div id="positionDisplay" class="position">-</div>
             <p id="status" class="loading">Enter your phone number to check position</p>
+            <p class="refresh-indicator">Position updates automatically every few seconds</p>
         </div>
     </div>
 
     <script>
         // GitHub repository configuration
-        const REPO_NAME = 'Suyyash-aroraa/Kwality-main';  // Repository name
+        const REPO_NAME = 'Suyyash-aroraa/Kwality-main';
         const phoneInput = document.getElementById('phoneInput');
         const positionDisplay = document.getElementById('positionDisplay');
         const statusElement = document.getElementById('status');
         let currentPosition = null;
 
         async function fetchPosition(retryCount = 0) {
-            if (!phoneInput.value) return;
+            if (!phoneInput.value || phoneInput.value.length !== 10) return;
             
             try {
                 statusElement.textContent = 'Checking position...';
@@ -100,7 +111,10 @@
                 // Add cache-busting parameter to bypass GitHub's caching
                 const timestamp = Date.now();
                 const random = Math.floor(Math.random() * 10000);
+                
+                // Fetch from GitHub raw content URL
                 const response = await fetch(`https://raw.githubusercontent.com/${REPO_NAME}/main/position.html?t=${timestamp}&r=${random}`);
+                
                 if (!response.ok) {
                     if (retryCount < 3) {
                         const delay = Math.pow(2, retryCount) * 1000;
@@ -116,11 +130,21 @@
 7987205018,1
 <!--POSITION_DATA_END-->/i);
                 
-                if (!positionDataMatch?.length || !positionDataMatch[1]) {
+                if (!positionDataMatch || !positionDataMatch[1]) {
                     throw new Error('Position data not found in the HTML');
                 }
                 
                 const positionData = positionDataMatch[1].trim();
+                
+                // Skip if no data
+                if (!positionData) {
+                    positionDisplay.textContent = '-';
+                    statusElement.textContent = 'No waitlist data available';
+                    statusElement.className = 'error';
+                    return;
+                }
+                
+                // Parse position data
                 const positions = new Map(
                     positionData.split('\n')
                         .filter(line => line.trim())
@@ -132,10 +156,12 @@
                     positionDisplay.textContent = position;
                     statusElement.textContent = 'Your current position in line';
                     statusElement.className = '';
+                    currentPosition = position;
                 } else {
                     positionDisplay.textContent = '-';
                     statusElement.textContent = 'Phone number not found in waitlist';
                     statusElement.className = 'error';
+                    currentPosition = null;
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -145,6 +171,7 @@
             }
         }
 
+        // Check position when phone number is entered
         phoneInput.addEventListener('input', () => {
             if (phoneInput.value.length === 10) {
                 fetchPosition();
@@ -152,6 +179,7 @@
                 positionDisplay.textContent = '-';
                 statusElement.textContent = 'Enter your phone number to check position';
                 statusElement.className = '';
+                currentPosition = null;
             }
         });
 
@@ -161,23 +189,23 @@
         const baseDelay = 2000;
         
         async function refreshWithRetry() {
-            try {
-                await fetchPosition();
-                retryCount = 0;
-            } catch (error) {
-                retryCount++;
-                if (retryCount <= maxRetries) {
-                    const delay = baseDelay * Math.pow(2, retryCount - 1);
-                    setTimeout(refreshWithRetry, delay);
+            if (phoneInput.value.length === 10) {
+                try {
+                    await fetchPosition();
+                    retryCount = 0;
+                } catch (error) {
+                    retryCount++;
+                    if (retryCount <= maxRetries) {
+                        const delay = baseDelay * Math.pow(2, retryCount - 1);
+                        setTimeout(refreshWithRetry, delay);
+                    }
                 }
             }
         }
         
         // Refresh position every 3 seconds with retry capability
-        setInterval(() => {
-                refreshWithRetry();
-        }, 3000);
-        </script>
-        <!--POSITION_DATA_START-->
-        <!-- Position data will be inserted here by the cloud.py script -->
-        
+        setInterval(refreshWithRetry, 3000);
+    </script>
+    <!--POSITION_DATA_START-->
+    <!-- Position data will be inserted here by the cloud.py script -->
+    
