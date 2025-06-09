@@ -128,7 +128,7 @@
                 
                 const html = await response.text();
                 const startMarker = '<!--POSITION_DATA_START-->
-7987205018,1
+9174455550,1
 <!--POSITION_DATA_END-->';
                 
                 const startIndex = html.indexOf(startMarker);
@@ -141,7 +141,12 @@
                     return;
                 }
                 
-                const positionData = html.substring(startIndex + startMarker.length, endIndex).trim();
+                let positionData = html.substring(startIndex + startMarker.length, endIndex).trim();
+                
+                // Clean up the data by removing HTML comments and extra whitespace
+                positionData = positionData.replace(/<!--.*?-->/g, '').trim();
+                
+                console.log('Raw position data:', JSON.stringify(positionData));
                 
                 if (!positionData) {
                     positionDisplay.textContent = '-';
@@ -151,21 +156,29 @@
                 }
                 
                 const positions = new Map();
-                const lines = positionData.split('\n');
+                const lines = positionData.split(/[\n\r]+/);
+                
+                console.log('Split lines:', lines);
                 
                 for (let i = 0; i < lines.length; i++) {
                     const line = lines[i].trim();
-                    if (line) {
+                    console.log('Processing line:', JSON.stringify(line));
+                    
+                    if (line && line.includes(',')) {
                         const parts = line.split(',');
                         if (parts.length >= 2) {
                             const phone = parts[0].trim();
                             const pos = parts[1].trim();
-                            if (phone && pos) {
+                            console.log('Found entry:', phone, '->', pos);
+                            
+                            if (phone && pos && /^\d+$/.test(pos)) {
                                 positions.set(phone, pos);
                             }
                         }
                     }
                 }
+                
+                console.log('Final positions map:', positions);
 
                 const position = positions.get(phoneNumber);
                 if (position) {
