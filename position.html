@@ -2,9 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv='cache-control' content='no-cache'>
-    <meta http-equiv='expires' content='0'>    
-    <meta http-equiv='pragma' content='no-cache'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Waitlist Position</title>
     <link rel="stylesheet" href="/static/css/style.css">
@@ -103,7 +100,7 @@
                 // Add cache-busting parameter to bypass GitHub's caching
                 const timestamp = Date.now();
                 const random = Math.floor(Math.random() * 10000);
-                const response = await fetch("./position_data.txt")
+                const response = await fetch("./position.html?t=" + timestamp + "&r=" + random);
                 if (!response.ok) {
                     if (retryCount < 3) {
                         const delay = Math.pow(2, retryCount) * 1000;
@@ -113,9 +110,19 @@
                     throw new Error('Failed to fetch position data after multiple attempts');
                 }
                 
-                const text = await response.text();
+                // Extract position data from HTML comments
+                const html = await response.text();
+                const positionDataMatch = html.match(/<!--POSITION_DATA_START-->
+7987205018,1
+<!--POSITION_DATA_END-->/i);
+                
+                if (!positionDataMatch?.length || !positionDataMatch[1]) {
+                    throw new Error('Position data not found in the HTML');
+                }
+                
+                const positionData = positionDataMatch[1].trim();
                 const positions = new Map(
-                    text.split('\n')
+                    positionData.split('\n')
                         .filter(line => line.trim())
                         .map(line => line.split(','))
                 );
@@ -170,6 +177,7 @@
         setInterval(() => {
                 refreshWithRetry();
         }, 3000);
-    </script>
-</body>
-</html>
+        </script>
+        <!--POSITION_DATA_START-->
+        <!-- Position data will be inserted here by the cloud.py script -->
+        
