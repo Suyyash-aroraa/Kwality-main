@@ -128,7 +128,7 @@
                 
                 const html = await response.text();
                 const startMarker = '<!--POSITION_DATA_START-->
-9174455550,1
+{"9174455550": 1}
 <!--POSITION_DATA_END-->';
                 
                 const startIndex = html.indexOf(startMarker);
@@ -155,32 +155,20 @@
                     return;
                 }
                 
-                const positions = new Map();
-                const lines = positionData.split(/[\n\r]+/);
-                
-                console.log('Split lines:', lines);
-                
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i].trim();
-                    console.log('Processing line:', JSON.stringify(line));
-                    
-                    if (line && line.includes(',')) {
-                        const parts = line.split(',');
-                        if (parts.length >= 2) {
-                            const phone = parts[0].trim();
-                            const pos = parts[1].trim();
-                            console.log('Found entry:', phone, '->', pos);
-                            
-                            if (phone && pos && /^\d+$/.test(pos)) {
-                                positions.set(phone, pos);
-                            }
-                        }
-                    }
+                // Parse the JSON data
+                let positions = {};
+                try {
+                    positions = JSON.parse(positionData);
+                    console.log('Parsed positions object:', positions);
+                } catch (parseError) {
+                    console.error('Error parsing JSON:', parseError);
+                    positionDisplay.textContent = '-';
+                    statusElement.textContent = 'Error parsing waitlist data';
+                    statusElement.className = 'error';
+                    return;
                 }
-                
-                console.log('Final positions map:', positions);
 
-                const position = positions.get(phoneNumber);
+                const position = positions[phoneNumber];
                 if (position) {
                     positionDisplay.textContent = position;
                     statusElement.textContent = 'Your current position in line';
