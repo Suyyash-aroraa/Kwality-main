@@ -95,6 +95,7 @@
         const positionDisplay = document.getElementById('positionDisplay');
         const statusElement = document.getElementById('status');
         let refreshTimer = null;
+        let PositionDataDict = {}; // Global dictionary to store position data
 
         function isValidPhone(phone) {
             return phone.length === 10 && /^\d{10}$/.test(phone);
@@ -152,37 +153,44 @@
                     positionDisplay.textContent = '-';
                     statusElement.textContent = 'No waitlist data available';
                     statusElement.className = 'error';
+                    PositionDataDict = {};
                     return;
                 }
                 
-                // Parse the JSON data
-                let positions = {};
+                // Parse the JSON data and update global dictionary
                 try {
-                    positions = JSON.parse(positionData);
-                    console.log('Parsed positions object:', positions);
+                    PositionDataDict = JSON.parse(positionData);
+                    console.log('Updated PositionDataDict:', PositionDataDict);
                 } catch (parseError) {
                     console.error('Error parsing JSON:', parseError);
                     positionDisplay.textContent = '-';
                     statusElement.textContent = 'Error parsing waitlist data';
                     statusElement.className = 'error';
+                    PositionDataDict = {};
                     return;
                 }
 
-                const position = positions[phoneNumber];
-                if (position) {
-                    positionDisplay.textContent = position;
-                    statusElement.textContent = 'Your current position in line';
-                    statusElement.className = '';
-                } else {
-                    positionDisplay.textContent = '-';
-                    statusElement.textContent = 'Phone number not found in waitlist';
-                    statusElement.className = 'error';
-                }
+                // Check position for current phone number
+                updatePositionDisplay(phoneNumber);
                 
             } catch (error) {
                 console.error('Error:', error);
                 positionDisplay.textContent = '-';
                 statusElement.textContent = 'Error checking position. Please try again.';
+                statusElement.className = 'error';
+                PositionDataDict = {};
+            }
+        }
+
+        function updatePositionDisplay(phoneNumber) {
+            const position = PositionDataDict[phoneNumber];
+            if (position !== undefined) {
+                positionDisplay.textContent = position;
+                statusElement.textContent = `Your current position in line`;
+                statusElement.className = '';
+            } else {
+                positionDisplay.textContent = '-';
+                statusElement.textContent = 'Phone number not found in waitlist';
                 statusElement.className = 'error';
             }
         }
@@ -207,6 +215,11 @@
             stopAutoRefresh();
             
             if (isValidPhone(phoneNumber)) {
+                // If we already have position data, check immediately
+                if (Object.keys(PositionDataDict).length > 0) {
+                    updatePositionDisplay(phoneNumber);
+                }
+                // Fetch fresh data from server
                 fetchPosition();
                 startAutoRefresh();
             } else {
@@ -234,9 +247,18 @@
                 startAutoRefresh();
             }
         });
+
+        // Debug function to inspect current position data
+        window.debugPositions = function() {
+            console.log('Current PositionDataDict:', PositionDataDict);
+            console.log('Number of entries:', Object.keys(PositionDataDict).length);
+            return PositionDataDict;
+        };
     </script>
-    <!--POSITION_DATA_START-->
-    <!-- Position data will be inserted here by the cloud.py script -->
-    <!--POSITION_DATA_END-->
+    
+<!--POSITION_DATA_START-->
+{}
+<!--POSITION_DATA_END-->
+
 </body>
 </html>
