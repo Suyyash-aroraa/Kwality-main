@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .menu-container {
+            position: relative;
+            width: 100%;
+            max-width: 90vw;
+            height: 95vh;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .flip-book {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            perspective: 1000px;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: left center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .page.flipped {
+            transform: rotateY(-180deg);
+        }
+
+        .page-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-front {
+            transform: rotateY(0deg);
+        }
+
+        .page-back {
+            transform: rotateY(180deg);
+        }
+
+        .page img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navigation {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .page-counter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 100;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #666;
+            font-size: 18px;
+            z-index: 50;
+        }
+
+        .page-indicator {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        .gesture-hint {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 14px;
+            text-align: center;
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gesture-hint.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            
+            .menu-container {
+                height: 98vh;
+                max-width: 98vw;
+                border-radius: 10px;
+            }
+            
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            
+            .page-counter {
+                top: 10px;
+                right: 10px;
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            
+            .navigation {
+                bottom: 10px;
+            }
+            
+            .page-indicator {
+                bottom: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-container">
+        <div class="page-counter">
+            <span id="currentPage">1</span> / <span id="totalPages">16</span>
+        </div>
+
+        <div class="flip-book" id="flipBook">
+            <div class="loading" id="loading">Loading menu...</div>
+        </div>
+
+        <div class="page-indicator" id="pageIndicator"></div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="previousPage()">← Previous</button>
+            <button class="nav-btn" id="nextBtn" onclick="nextPage()">Next →</button>
+        </div>
+
+        <div class="gesture-hint" id="gestureHint">
+            Tap the page to flip or use the buttons below
+        </div>
+    </div>
+
+    <script>
+        class FlipMenu {
+            constructor() {
+                this.currentPage = 0;
+                this.totalPages = 16;
+                this.pages = [];
+                this.isAnimating = false;
+                this.init();
+            }
+
+            init() {
+                this.createPages();
+                this.createIndicators();
+                this.updateNavigation();
+                this.showGestureHint();
+                this.addSwipeSupport();
+            }
+
+            createPages() {
+                const flipBook = document.getElementById('flipBook');
+                const loading = document.getElementById('loading');
+
+                for (let i = 0; i < this.totalPages; i++) {
+                    const page = document.createElement('div');
+                    page.className = 'page';
+                    page.style.zIndex = this.totalPages - i;
+
+                    const pageContent = document.createElement('div');
+                    pageContent.className = 'page-content page-front';
+
+                    const img = document.createElement('img');
+                    const pageNumber = String(i + 1).padStart(4, '0');
+                    img.src = `Menu_Images/Menu_page-${pageNumber}.jpg`;
+                    img.alt = `Menu Page ${i + 1}`;
+                    
+                    img.onload = () => {
+                        if (i === this.totalPages - 1) {
+                            loading.style.display = 'none';
+                        }
+                    };
+
+                    img.onerror = () => {
+                        img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaD0iNjAwIiB2aWV3Qm94PSIwIDAgNDAwIDYwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI2MDAiIGZpbGw9IiNmNWY1ZjUiLz4KPHN2ZyB4PSIxNzUiIHk9IjI3NSIgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9IiM5OTk5OTkiPgo8cGF0aCBkPSJNMjEgMTl2LTJIMXY0aDJ2LTJIMnYyaDJWMTlIMXYyaDIwdi0ySDIxek04IDEwVjhoM1Y2SDZ2NEg4ek0xMiAxNlYxNGgzVjEySDl2NEgxMnoiLz4KPHN2Zz4KPHRleHQgeD0iMjAwIiB5PSIzNTAiIGZpbGw9IiM5OTk5OTkiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TWVudSBQYWdlICcgKyAoaSArIDEpICsgJzwvdGV4dD4KPHN2Zz4=';
+                    };
+
+                    pageContent.appendChild(img);
+                    page.appendChild(pageContent);
+
+                    // Add click handler for page flipping
+                    page.addEventListener('click', (e) => {
+                        if (!this.isAnimating) {
+                            if (e.clientX > window.innerWidth / 2) {
+                                this.nextPage();
+                            } else {
+                                this.previousPage();
+                            }
+                        }
+                    });
+
+                    flipBook.appendChild(page);
+                    this.pages.push(page);
+                }
+            }
+
+            createIndicators() {
+                const indicator = document.getElementById('pageIndicator');
+                for (let i = 0; i < this.totalPages; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'dot';
+                    if (i === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => this.goToPage(i));
+                    indicator.appendChild(dot);
+                }
+            }
+
+            nextPage() {
+                if (this.isAnimating || this.currentPage >= this.totalPages - 1) return;
+                
+                this.isAnimating = true;
+                this.pages[this.currentPage].classList.add('flipped');
+                this.currentPage++;
+                
+                setTimeout(() => {
+                    this.isAnimating = false;
+                    this.updateNavigation();
+                    this.updateIndicators();
+                }, 800);
+            }
+
+            previousPage() {
+                if (this.isAnimating || this.currentPage <= 0) return;
+                
+                this.isAnimating = true;
+                this.currentPage--;
+                this.pages[this.currentPage].classList.remove('flipped');
+                
+                setTimeout(() => {
+                    this.isAnimating = false;
+                    this.updateNavigation();
+                    this.updateIndicators();
+                }, 800);
+            }
+
+            goToPage(pageIndex) {
+                if (this.isAnimating || pageIndex === this.currentPage) return;
+                
+                this.isAnimating = true;
+                
+                if (pageIndex > this.currentPage) {
+                    for (let i = this.currentPage; i < pageIndex; i++) {
+                        this.pages[i].classList.add('flipped');
+                    }
+                } else {
+                    for (let i = this.currentPage - 1; i >= pageIndex; i--) {
+                        this.pages[i].classList.remove('flipped');
+                    }
+                }
+                
+                this.currentPage = pageIndex;
+                
+                setTimeout(() => {
+                    this.isAnimating = false;
+                    this.updateNavigation();
+                    this.updateIndicators();
+                }, 800);
+            }
+
+            updateNavigation() {
+                document.getElementById('currentPage').textContent = this.currentPage + 1;
+                document.getElementById('prevBtn').disabled = this.currentPage === 0;
+                document.getElementById('nextBtn').disabled = this.currentPage === this.totalPages - 1;
+            }
+
+            updateIndicators() {
+                const dots = document.querySelectorAll('.dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === this.currentPage);
+                });
+            }
+
+            showGestureHint() {
+                const hint = document.getElementById('gestureHint');
+                setTimeout(() => {
+                    hint.classList.add('show');
+                    setTimeout(() => {
+                        hint.classList.remove('show');
+                    }, 3000);
+                }, 1000);
+            }
+
+            addSwipeSupport() {
+                let startX, startY, distX, distY, threshold = 100, restraint = 100, allowedTime = 300, startTime;
+                const flipBook = document.getElementById('flipBook');
+
+                flipBook.addEventListener('touchstart', (e) => {
+                    const touchobj = e.changedTouches[0];
+                    startX = touchobj.pageX;
+                    startY = touchobj.pageY;
+                    startTime = new Date().getTime();
+                }, false);
+
+                flipBook.addEventListener('touchend', (e) => {
+                    const touchobj = e.changedTouches[0];
+                    distX = touchobj.pageX - startX;
+                    distY = touchobj.pageY - startY;
+                    const elapsedTime = new Date().getTime() - startTime;
+
+                    if (elapsedTime <= allowedTime && Math.abs(distX) >= threshold && Math.abs(distY) <= restraint) {
+                        if (distX > 0) {
+                            this.previousPage();
+                        } else {
+                            this.nextPage();
+                        }
+                    }
+                }, false);
+            }
+        }
+
+        // Global functions for button clicks
+        function nextPage() {
+            flipMenu.nextPage();
+        }
+
+        function previousPage() {
+            flipMenu.previousPage();
+        }
+
+        // Initialize the flip menu when page loads
+        let flipMenu;
+        document.addEventListener('DOMContentLoaded', () => {
+            flipMenu = new FlipMenu();
+        });
+
+        // Add keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextPage();
+            } else if (e.key === 'ArrowLeft') {
+                previousPage();
+            }
+        });
+    </script>
+</body>
+</html>
