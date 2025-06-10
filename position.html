@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waitlist Position</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <title>Kwality Restaurant | Waitlist Position</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f5f7fa;
             margin: 0;
             padding: 0;
+            color: #333;
         }
         .container {
             max-width: 800px;
@@ -57,6 +57,11 @@
             outline: none;
             border-color: #3498db;
         }
+        .refresh-indicator {
+            font-size: 12px;
+            color: #95a5a6;
+            margin-top: 20px;
+        }
         @media (max-width: 600px) {
             .position-display {
                 padding: 20px;
@@ -75,98 +80,185 @@
 <body>
     <div class="container">
         <div class="position-display">
-            <h1>Check Your Position</h1>
-            <input type="tel" id="phoneInput" class="phone-input" placeholder="Enter your phone number" pattern="[0-9]{10}" required>
+            <h1>Kwality Restaurant Waitlist</h1>
+            <p>Enter your phone number to check your current position in the waitlist</p>
+            <input type="tel" id="phoneInput" class="phone-input" placeholder="Enter your phone number" maxlength="10">
             <div id="positionDisplay" class="position">-</div>
-            <p id="status" class="loading">Enter your phone number to check position</p>
+            <p id="status">Enter your phone number to check position</p>
+            <p class="refresh-indicator">Position updates automatically every few seconds</p>
         </div>
     </div>
 
     <script>
-        // GitHub repository configuration
-        const REPO_NAME = 'Suyyash-aroraa/datWaitlist';  // Replace with your repository name
+        const REPO_NAME = 'Suyyash-aroraa/Kwality-main';
         const phoneInput = document.getElementById('phoneInput');
         const positionDisplay = document.getElementById('positionDisplay');
         const statusElement = document.getElementById('status');
-        let currentPosition = null;
+        let refreshTimer = null;
+        let PositionDataDict = {}; // Global dictionary to store position data
 
-        async function fetchPosition(retryCount = 0) {
-            if (!phoneInput.value) return;
+        function isValidPhone(phone) {
+            return phone.length === 10 && /^\d{10}$/.test(phone);
+        }
+
+        async function fetchPosition() {
+            const phoneNumber = phoneInput.value.trim();
+            
+            if (!isValidPhone(phoneNumber)) {
+                return;
+            }
             
             try {
                 statusElement.textContent = 'Checking position...';
                 statusElement.className = 'loading';
 
-                // Add cache-busting parameter to bypass GitHub's caching
                 const timestamp = Date.now();
                 const random = Math.floor(Math.random() * 10000);
-                const response = await fetch("./position_data.txt")
-                if (!response.ok) {
-                    if (retryCount < 3) {
-                        const delay = Math.pow(2, retryCount) * 1000;
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                        return fetchPosition(retryCount + 1);
+                const url = `https://raw.githubusercontent.com/${REPO_NAME}/main/position.html?t=${timestamp}&r=${random}`;
+                
+                const response = await fetch(url, {
+                    cache: 'no-cache',
+                    headers: {
+                        'Cache-Control': 'no-cache'
                     }
-                    throw new Error('Failed to fetch position data after multiple attempts');
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
                 }
                 
-                const text = await response.text();
-                const positions = new Map(
-                    text.split('\n')
-                        .filter(line => line.trim())
-                        .map(line => line.split(','))
-                );
-
-                const position = positions.get(phoneInput.value);
-                if (position) {
-                    positionDisplay.textContent = position;
-                    statusElement.textContent = 'Your current position in line';
-                    statusElement.className = '';
-                } else {
+                const html = await response.text();
+                const startMarker = '<!--POSITION_DATA_START-->
+{"9174455550": 1}
+<!--POSITION_DATA_END-->';
+                
+                const startIndex = html.indexOf(startMarker);
+                const endIndex = html.indexOf(endMarker);
+                
+                if (startIndex === -1 || endIndex === -1) {
                     positionDisplay.textContent = '-';
-                    statusElement.textContent = 'Phone number not found in waitlist';
+                    statusElement.textContent = 'Waitlist data not available';
                     statusElement.className = 'error';
+                    return;
                 }
+                
+                let positionData = html.substring(startIndex + startMarker.length, endIndex).trim();
+                
+                // Clean up the data by removing HTML comments and extra whitespace
+                positionData = positionData.replace(/<!--.*?-->/g, '').trim();
+                
+                console.log('Raw position data:', JSON.stringify(positionData));
+                
+                if (!positionData) {
+                    positionDisplay.textContent = '-';
+                    statusElement.textContent = 'No waitlist data available';
+                    statusElement.className = 'error';
+                    PositionDataDict = {};
+                    return;
+                }
+                
+                // Parse the JSON data and update global dictionary
+                try {
+                    PositionDataDict = JSON.parse(positionData);
+                    console.log('Updated PositionDataDict:', PositionDataDict);
+                } catch (parseError) {
+                    console.error('Error parsing JSON:', parseError);
+                    positionDisplay.textContent = '-';
+                    statusElement.textContent = 'Error parsing waitlist data';
+                    statusElement.className = 'error';
+                    PositionDataDict = {};
+                    return;
+                }
+
+                // Check position for current phone number
+                updatePositionDisplay(phoneNumber);
+                
             } catch (error) {
                 console.error('Error:', error);
                 positionDisplay.textContent = '-';
                 statusElement.textContent = 'Error checking position. Please try again.';
                 statusElement.className = 'error';
+                PositionDataDict = {};
             }
         }
 
-        phoneInput.addEventListener('input', () => {
-            if (phoneInput.value.length === 10) {
-                fetchPosition();
+        function updatePositionDisplay(phoneNumber) {
+            const position = PositionDataDict[phoneNumber];
+            if (position !== undefined) {
+                positionDisplay.textContent = position;
+                statusElement.textContent = `Your current position in line`;
+                statusElement.className = '';
             } else {
                 positionDisplay.textContent = '-';
-                statusElement.textContent = 'Enter your phone number to check position';
-                statusElement.className = '';
+                statusElement.textContent = 'Phone number not found in waitlist';
+                statusElement.className = 'error';
+            }
+        }
+
+        function startAutoRefresh() {
+            if (refreshTimer) {
+                clearInterval(refreshTimer);
+            }
+            refreshTimer = setInterval(fetchPosition, 5000);
+        }
+
+        function stopAutoRefresh() {
+            if (refreshTimer) {
+                clearInterval(refreshTimer);
+                refreshTimer = null;
+            }
+        }
+
+        phoneInput.addEventListener('input', function() {
+            const phoneNumber = phoneInput.value.trim();
+            
+            stopAutoRefresh();
+            
+            if (isValidPhone(phoneNumber)) {
+                // If we already have position data, check immediately
+                if (Object.keys(PositionDataDict).length > 0) {
+                    updatePositionDisplay(phoneNumber);
+                }
+                // Fetch fresh data from server
+                fetchPosition();
+                startAutoRefresh();
+            } else {
+                positionDisplay.textContent = '-';
+                if (phoneNumber.length === 0) {
+                    statusElement.textContent = 'Enter your phone number to check position';
+                    statusElement.className = '';
+                } else {
+                    statusElement.textContent = 'Please enter a valid 10-digit phone number';
+                    statusElement.className = 'error';
+                }
             }
         });
 
-        // Improved refresh with retry logic and exponential backoff
-        let retryCount = 0;
-        const maxRetries = 3;
-        const baseDelay = 2000;
-        
-        async function refreshWithRetry() {
-            try {
-                await fetchPosition();
-                retryCount = 0;
-            } catch (error) {
-                retryCount++;
-                if (retryCount <= maxRetries) {
-                    const delay = baseDelay * Math.pow(2, retryCount - 1);
-                    setTimeout(refreshWithRetry, delay);
-                }
+        phoneInput.addEventListener('keypress', function(e) {
+            if (!/\d/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                e.preventDefault();
             }
-        }
-        
-        // Refresh position every 3 seconds with retry capability
-        setInterval(() => {
-                refreshWithRetry();
-        }, 3000);
+        });
+
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                stopAutoRefresh();
+            } else if (isValidPhone(phoneInput.value.trim())) {
+                startAutoRefresh();
+            }
+        });
+
+        // Debug function to inspect current position data
+        window.debugPositions = function() {
+            console.log('Current PositionDataDict:', PositionDataDict);
+            console.log('Number of entries:', Object.keys(PositionDataDict).length);
+            return PositionDataDict;
+        };
     </script>
+    
+<!--POSITION_DATA_START-->
+{}
+<!--POSITION_DATA_END-->
+
 </body>
 </html>
