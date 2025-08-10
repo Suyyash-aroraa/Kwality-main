@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kwality Restaurant | Admin Dashboard</title>
+    <title>Kwality Restaurant | Admin History</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -22,7 +22,7 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background-color: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
@@ -111,17 +111,6 @@
             box-shadow: 0 8px 20px rgba(212, 175, 53, 0.4);
         }
         
-        .btn-danger {
-            background-color: #ff4b4b;
-            box-shadow: 0 4px 15px rgba(255, 75, 75, 0.15);
-        }
-        
-        .btn-danger:hover {
-            background-color: #ff5e5e;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 75, 75, 0.2);
-        }
-        
         .btn-secondary {
             background-color: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -131,27 +120,10 @@
             background-color: rgba(255, 255, 255, 0.15);
             transform: translateY(-2px);
         }
-
-        .btn-warning {
-            background-color: #ffc107;
-            color: #000;
-            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
-        }
-        
-        .btn-warning:hover {
-            background-color: #ffca2c;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4);
-        }
         
         .btn i {
             margin-right: 8px;
             font-size: 14px;
-        }
-        
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 13px;
         }
         
         .flash-message {
@@ -184,8 +156,7 @@
             color: #ff4b4b;
         }
         
-        .waitlist-section {
-            margin-bottom: 40px;
+        .history-section {
             background-color: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
             overflow: hidden;
@@ -215,7 +186,6 @@
             border-radius: 40px;
             font-size: 12px;
             font-weight: 500;
-            margin-left: 10px;
         }
         
         table {
@@ -233,7 +203,7 @@
             background-color: rgba(255, 255, 255, 0.03);
             font-weight: 500;
             color: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
+            font-size: 13px;
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
@@ -251,84 +221,63 @@
             font-size: 14px;
         }
         
-        .actions {
-            display: flex;
-            gap: 8px;
-        }
-        
         .empty-message {
-            padding: 30px;
+            padding: 40px;
             text-align: center;
             color: rgba(255, 255, 255, 0.5);
             font-style: italic;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
         
-        .highlight {
-            color: #d4af35;
-            font-weight: 500;
-        }
-        
-        .wait-time {
+        .status-badge {
             padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 13px;
+            border-radius: 12px;
+            font-size: 12px;
             font-weight: 500;
+            text-transform: uppercase;
         }
         
-        .time-short {
+        .status-seated {
             background-color: rgba(40, 167, 69, 0.15);
             color: #28a745;
         }
         
-        .time-medium {
+        .status-removed {
+            background-color: rgba(255, 75, 75, 0.15);
+            color: #ff4b4b;
+        }
+        
+        .status-waiting {
             background-color: rgba(255, 193, 7, 0.15);
             color: #ffc107;
         }
         
-        .time-long {
-            background-color: rgba(255, 75, 75, 0.15);
-            color: #ff4b4b;
-        }
-
-        .ready-timer {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 13px;
-            font-weight: 500;
-            background-color: rgba(255, 193, 7, 0.15);
-            color: #ffc107;
-            display: inline-flex;
-            align-items: center;
-            margin-left: 8px;
-        }
-
-        .ready-timer.expiring {
-            background-color: rgba(255, 75, 75, 0.15);
-            color: #ff4b4b;
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
+        .status-ready {
+            background-color: rgba(0, 123, 255, 0.15);
+            color: #007bff;
         }
         
-        .auto-refresh {
-            text-align: center;
-            margin-top: 20px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 13px;
-            display: flex;
-            align-items: center;
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
             justify-content: center;
+            align-items: center;
         }
-        
-        .auto-refresh i {
-            margin-right: 6px;
-            animation: spin 2s linear infinite;
-            font-size: 14px;
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loading-spinner {
+            color: #d4af35;
+            font-size: 24px;
+            animation: spin 1s linear infinite;
         }
         
         .decoration {
@@ -354,42 +303,6 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
-        }
-
-        /* Action buttons container */
-        .action-buttons {
-            display: flex;
-            flex-direction: row;
-            gap: 8px;
-            width: 100%;
-        }
-        
-        .action-buttons .btn {
-            flex: 1;
-            justify-content: center;
-        }
-
-        .loading-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .loading-overlay.show {
-            display: flex;
-        }
-
-        .loading-spinner {
-            color: #d4af35;
-            font-size: 24px;
-            animation: spin 1s linear infinite;
         }
         
         /* iPad and mobile optimizations */
@@ -417,13 +330,9 @@
                 font-size: 16px;
             }
             
-            .btn-sm {
-                padding: 10px 15px;
-                font-size: 14px;
-            }
-            
             th, td {
-                padding: 12px 10px;
+                padding: 10px 8px;
+                font-size: 13px;
             }
             
             .section-title {
@@ -451,28 +360,37 @@
             }
             
             th, td {
-                padding: 10px 8px;
-                font-size: 14px;
+                padding: 8px 6px;
+                font-size: 12px;
             }
             
-            th:nth-child(3), /* Phone column */
-            td:nth-child(3) {
-                display: none; /* Hide phone numbers on very small screens */
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-            
-            .btn-sm {
-                padding: 12px 10px;
-                font-size: 14px;
+            /* Hide less important columns on small screens */
+            th:nth-child(6), /* Time Ready */
+            td:nth-child(6),
+            th:nth-child(7), /* Wait Duration */
+            td:nth-child(7) {
+                display: none;
             }
         }
         
         /* Touch-friendly improvements */
         button, .btn {
-            min-height: 44px; /* Apple's recommended minimum touch target size */
+            min-height: 44px;
+        }
+
+        .refresh-note {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .refresh-note i {
+            margin-right: 6px;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -487,10 +405,10 @@
         
         <div class="content-wrapper">
             <div class="header">
-                <h1 class="page-title">Kwality Restaurant Management</h1>
+                <h1 class="page-title">Waitlist History</h1>
                 <div class="header-actions">
-                    <a href="admin_history.html" class="btn btn-secondary">
-                        <i class="fas fa-history"></i> View History
+                    <a href="admin_dashboard.html" class="btn btn-primary">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
                     </a>
                     <button onclick="logout()" class="btn btn-secondary">
                         <i class="fas fa-sign-out-alt"></i> Logout
@@ -503,96 +421,45 @@
                 <div id="flashText"></div>
             </div>
             
-            <div id="smallWaitlist" class="waitlist-section">
+            <div class="history-section">
                 <div class="section-header">
-                    <h2 class="section-title">Small Parties <span class="badge">1-4 people</span></h2>
-                    <span id="smallCount" class="badge">0 waiting</span>
+                    <h2 class="section-title">Complete Waitlist History</h2>
+                    <span id="historyCount" class="badge">0 entries</span>
                 </div>
                 
                 <div class="table-responsive">
                     <table>
                         <thead>
                             <tr>
-                                <th>Position</th>
                                 <th>Guest Name</th>
-                                <th>Phone</th>
                                 <th>Party Size</th>
-                                <th>Wait Time</th>
-                                <th>Actions</th>
+                                <th>Date</th>
+                                <th>Time Arrived</th>
+                                <th>Time Ready</th>
+                                <th>Wait Duration</th>
+                                <th>Final Status</th>
+                                <th>Waitlist Type</th>
+                                <th>Phone</th>
                             </tr>
                         </thead>
-                        <tbody id="smallTableBody">
+                        <tbody id="historyTableBody">
                             <tr>
-                                <td colspan="6" class="empty-message">No parties currently in this waitlist</td>
+                                <td colspan="9" class="empty-message">Loading history data...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             
-            <div id="mediumWaitlist" class="waitlist-section">
-                <div class="section-header">
-                    <h2 class="section-title">Medium Parties <span class="badge">5-6 people</span></h2>
-                    <span id="mediumCount" class="badge">0 waiting</span>
-                </div>
-                
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Position</th>
-                                <th>Guest Name</th>
-                                <th>Phone</th>
-                                <th>Party Size</th>
-                                <th>Wait Time</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="mediumTableBody">
-                            <tr>
-                                <td colspan="6" class="empty-message">No parties currently in this waitlist</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <div id="largeWaitlist" class="waitlist-section">
-                <div class="section-header">
-                    <h2 class="section-title">Large Parties <span class="badge">7+ people</span></h2>
-                    <span id="largeCount" class="badge">0 waiting</span>
-                </div>
-                
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Position</th>
-                                <th>Guest Name</th>
-                                <th>Phone</th>
-                                <th>Party Size</th>
-                                <th>Wait Time</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="largeTableBody">
-                            <tr>
-                                <td colspan="6" class="empty-message">No parties currently in this waitlist</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <div class="auto-refresh">
-                <i class="fas fa-sync-alt"></i> Dashboard refreshes automatically every 5 seconds
+            <div class="refresh-note">
+                <i class="fas fa-info-circle"></i> 
+                History data shows all waitlist entries and their outcomes
             </div>
         </div>
     </div>
     
     <script>
         const API_BASE_URL = 'https://wombat-usable-turtle.ngrok-free.app';
-        let refreshInterval;
         
         // Check authentication on page load
         window.addEventListener('load', function() {
@@ -602,199 +469,80 @@
                 return;
             }
             
-            // Load initial data
-            loadDashboard();
-            
-            // Set up auto-refresh
-            refreshInterval = setInterval(loadDashboard, 5000);
+            // Load history data
+            loadHistory();
         });
         
-        async function loadDashboard() {
+        async function makeApiRequest(url, options = {}) {
+            const headers = {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true',
+                'Accept': 'application/json',
+                ...options.headers
+            };
+            
+            return fetch(url, {
+                ...options,
+                headers,
+                mode: 'cors'
+            });
+        }
+        
+        async function loadHistory() {
             try {
                 showLoading(true);
                 
-                const response = await fetch(`${API_BASE_URL}/api/admin/dashboard`);
+                const response = await makeApiRequest(`${API_BASE_URL}/api/admin/history`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 const data = await response.json();
                 
                 if (data.status === 'success') {
-                    updateDashboard(data.data);
+                    updateHistoryTable(data.data.history);
+                    document.getElementById('historyCount').textContent = data.data.history.length + ' entries';
                 } else {
-                    showFlash('Error loading dashboard data', 'error');
+                    showFlash('Error loading history data', 'error');
                 }
                 
             } catch (error) {
                 console.error('Error:', error);
-                showFlash('Unable to connect to the server', 'error');
+                showFlash(`Unable to connect to the server: ${error.message}`, 'error');
             } finally {
                 showLoading(false);
             }
         }
         
-        function updateDashboard(data) {
-            const now = data.timestamp;
+        function updateHistoryTable(historyData) {
+            const tableBody = document.getElementById('historyTableBody');
             
-            // Update small waitlist
-            updateWaitlistTable('small', data.waitlist_data.small, now);
-            document.getElementById('smallCount').textContent = data.waitlist_data.small.length + ' waiting';
-            
-            // Update medium waitlist
-            updateWaitlistTable('medium', data.waitlist_data.medium, now);
-            document.getElementById('mediumCount').textContent = data.waitlist_data.medium.length + ' waiting';
-            
-            // Update large waitlist
-            updateWaitlistTable('large', data.waitlist_data.large, now);
-            document.getElementById('largeCount').textContent = data.waitlist_data.large.length + ' waiting';
-        }
-        
-        function updateWaitlistTable(type, entries, now) {
-            const tableBody = document.getElementById(type + 'TableBody');
-            
-            if (entries.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="6" class="empty-message">No parties currently in this waitlist</td></tr>';
+            if (historyData.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="9" class="empty-message">No history data available</td></tr>';
                 return;
             }
             
             let html = '';
-            entries.forEach((entry, index) => {
-                const waitMinutes = Math.floor((now - parseInt(entry.timestamp)) / 60);
-                const position = index + 1;
-                
-                let waitTimeHtml = '';
-                if (entry.status === 'ready' && entry.ready_timestamp) {
-                    const readySeconds = now - parseInt(entry.ready_timestamp);
-                    const remainingSeconds = 300 - readySeconds; // 5 minutes = 300 seconds
-                    
-                    if (remainingSeconds > 0) {
-                        const remainingMinutes = Math.floor(remainingSeconds / 60);
-                        const remainingSecs = remainingSeconds % 60;
-                        const isExpiring = remainingSeconds < 60;
-                        
-                        waitTimeHtml = `<span class="ready-timer ${isExpiring ? 'expiring' : ''}">
-                            <i class="fas fa-hourglass-half"></i> ${remainingMinutes}:${remainingSecs.toString().padStart(2, '0')}
-                        </span>`;
-                    } else {
-                        waitTimeHtml = `<span class="ready-timer expiring">
-                            <i class="fas fa-exclamation-circle"></i> Time's up!
-                        </span>`;
-                    }
-                } else {
-                    let timeClass = 'time-short';
-                    if (waitMinutes >= 30) timeClass = 'time-long';
-                    else if (waitMinutes >= 15) timeClass = 'time-medium';
-                    
-                    waitTimeHtml = `<span class="wait-time ${timeClass}">${waitMinutes} mins</span>`;
-                }
-                
-                const actionButtons = entry.status === 'waiting' 
-                    ? `<div class="action-buttons">
-                        <button type="button" class="btn btn-warning btn-sm" onclick="markReady('${entry.id}')">
-                            <i class="fas fa-clock"></i> Ready
-                        </button>
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="removeParty('${entry.id}')">
-                            <i class="fas fa-times"></i> Remove
-                        </button>
-                    </div>`
-                    : `<div class="action-buttons">
-                        <button type="button" class="btn btn-primary btn-sm" onclick="seatParty('${entry.id}')">
-                            <i class="fas fa-check"></i> Seat
-                        </button>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="removeParty('${entry.id}')">
-                            <i class="fas fa-times"></i> Remove
-                        </button>
-                    </div>`;
+            historyData.forEach(entry => {
+                const statusClass = `status-${entry.final_status.toLowerCase()}`;
                 
                 html += `
                     <tr>
-                        <td><span class="highlight">#${position}</span></td>
                         <td>${entry.name}</td>
-                        <td>${entry.phone}</td>
                         <td>${entry.party_size} guests</td>
-                        <td>${waitTimeHtml}</td>
-                        <td>${actionButtons}</td>
+                        <td>${entry.date}</td>
+                        <td>${entry.time_arrived}</td>
+                        <td>${entry.time_ready}</td>
+                        <td>${entry.wait_duration}</td>
+                        <td><span class="status-badge ${statusClass}">${entry.final_status}</span></td>
+                        <td>${entry.waitlist_type}</td>
+                        <td>${entry.phone}</td>
                     </tr>
                 `;
             });
             
             tableBody.innerHTML = html;
-        }
-        
-        async function markReady(entryId) {
-            try {
-                showLoading(true);
-                
-                const response = await fetch(`${API_BASE_URL}/api/admin/ready/${entryId}`, {
-                    method: 'POST'
-                });
-                
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    showFlash('Party successfully marked as ready');
-                    loadDashboard(); // Refresh the dashboard
-                } else {
-                    showFlash('Error updating party status', 'error');
-                }
-                
-            } catch (error) {
-                console.error('Error:', error);
-                showFlash('Unable to connect to the server', 'error');
-            } finally {
-                showLoading(false);
-            }
-        }
-        
-        async function seatParty(entryId) {
-            try {
-                showLoading(true);
-                
-                const response = await fetch(`${API_BASE_URL}/api/admin/seat/${entryId}`, {
-                    method: 'POST'
-                });
-                
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    showFlash('Party successfully seated');
-                    loadDashboard(); // Refresh the dashboard
-                } else {
-                    showFlash('Error updating party status', 'error');
-                }
-                
-            } catch (error) {
-                console.error('Error:', error);
-                showFlash('Unable to connect to the server', 'error');
-            } finally {
-                showLoading(false);
-            }
-        }
-        
-        async function removeParty(entryId) {
-            if (!confirm('Are you sure you want to remove this party from the waitlist?')) {
-                return;
-            }
-            
-            try {
-                showLoading(true);
-                
-                const response = await fetch(`${API_BASE_URL}/api/admin/remove/${entryId}`, {
-                    method: 'POST'
-                });
-                
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    showFlash('Party successfully removed from waitlist');
-                    loadDashboard(); // Refresh the dashboard
-                } else {
-                    showFlash('Error removing party', 'error');
-                }
-                
-            } catch (error) {
-                console.error('Error:', error);
-                showFlash('Unable to connect to the server', 'error');
-            } finally {
-                showLoading(false);
-            }
         }
         
         function showFlash(message, type = 'success') {
@@ -831,23 +579,9 @@
             if (confirm('Are you sure you want to logout?')) {
                 sessionStorage.removeItem('admin_token');
                 sessionStorage.removeItem('admin_username');
-                
-                // Clear refresh interval
-                if (refreshInterval) {
-                    clearInterval(refreshInterval);
-                }
-                
                 window.location.href = 'admin_login.html';
             }
         }
-        
-        // Clean up interval when page is unloaded
-        window.addEventListener('beforeunload', function() {
-            if (refreshInterval) {
-                clearInterval(refreshInterval);
-            }
-        });
     </script>
 </body>
-
 </html>
