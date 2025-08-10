@@ -142,6 +142,7 @@
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .status-card {
@@ -262,6 +263,12 @@
             color: #ff4b4b;
         }
 
+        .message.warning {
+            background: rgba(255, 193, 7, 0.15);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            color: #ffc107;
+        }
+
         .back-link {
             text-align: center;
             margin-top: 20px;
@@ -297,13 +304,13 @@
             margin-top: 15px;
         }
 
-        .refresh-btn:hover {
+        .refresh-btn:hover:not(:disabled) {
             background: rgba(255, 255, 255, 0.15);
         }
 
-        .auto-refresh {
+        .cooldown-timer {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 15px;
             color: rgba(255, 255, 255, 0.5);
             font-size: 12px;
         }
@@ -386,7 +393,7 @@
                 <i class="fas fa-sync-alt"></i> Refresh Status
             </button>
 
-            
+            <div id="cooldownTimer" class="cooldown-timer"></div>
         </div>
 
         <div class="back-link">
@@ -398,8 +405,11 @@
 
     <script>
         const API_BASE_URL = 'https://wombat-usable-turtle.ngrok-free.app';
-        let autoRefreshInterval;
+        const COOLDOWN_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+        
         let currentPhone = '';
+        let lastApiCall = 0;
+        let cooldownInterval = null;
         
         // Check for phone number in URL parameters
         const urlParams = new URLSearchParams(window.location.search);
@@ -423,6 +433,56 @@
             }
         });
         
+        function canMakeApiCall() {
+            const now = Date.now();
+            return (now - lastApiCall) >= COOLDOWN_DURATION;
+        }
+        
+        function getRemainingCooldown() {
+            const now = Date.now();
+            const elapsed = now - lastApiCall;
+            return Math.max(0, COOLDOWN_DURATION - elapsed);
+        }
+        
+        function formatTime(milliseconds) {
+            const minutes = Math.floor(milliseconds / 60000);
+            const seconds = Math.floor((milliseconds % 60000) / 1000);
+            return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        function updateCooldownDisplay() {
+            const cooldownTimer = document.getElementById('cooldownTimer');
+            const submitBtn = document.getElementById('submitBtn');
+            const refreshBtn = document.getElementById('refreshBtn');
+            
+            if (canMakeApiCall()) {
+                cooldownTimer.textContent = '';
+                if (submitBtn) submitBtn.disabled = false;
+                if (refreshBtn) refreshBtn.disabled = false;
+                if (cooldownInterval) {
+                    clearInterval(cooldownInterval);
+                    cooldownInterval = null;
+                }
+                return;
+            }
+            
+            const remaining = getRemainingCooldown();
+            cooldownTimer.textContent = `Please wait ${formatTime(remaining)} before checking again`;
+            
+            if (submitBtn) submitBtn.disabled = true;
+            if (refreshBtn) refreshBtn.disabled = true;
+        }
+        
+        function startCooldownTimer() {
+            updateCooldownDisplay();
+            
+            if (cooldownInterval) {
+                clearInterval(cooldownInterval);
+            }
+            
+            cooldownInterval = setInterval(updateCooldownDisplay, 1000);
+        }
+        
         async function checkStatus(phone) {
             const submitBtn = document.getElementById('submitBtn');
             const refreshBtn = document.getElementById('refreshBtn');
@@ -430,7 +490,15 @@
             const messageDiv = document.getElementById('message');
             const statusCard = document.getElementById('statusCard');
             
+            // Check if we can make an API call
+            if (!canMakeApiCall()) {
+                const remaining = getRemainingCooldown();
+                showMessage(`Please wait ${formatTime(remaining)} before checking again`, 'warning');
+                return;
+            }
+            
             currentPhone = phone;
+            lastApiCall = Date.now();
             
             // Show loading state
             if (submitBtn) submitBtn.disabled = true;
@@ -452,23 +520,20 @@
                 if (data.status === 'success') {
                     displayStatus(data.data);
                     statusCard.classList.add('show');
-                    startAutoRefresh();
+                    showMessage('Status updated successfully', 'success');
                 } else {
                     showMessage(data.message, 'error');
                     statusCard.classList.remove('show');
-                    stopAutoRefresh();
                 }
                 
             } catch (error) {
                 console.error('Error:', error);
                 showMessage('Unable to connect to the server. Please try again.', 'error');
                 statusCard.classList.remove('show');
-                stopAutoRefresh();
             } finally {
-                // Hide loading state
-                if (submitBtn) submitBtn.disabled = false;
-                if (refreshBtn) refreshBtn.disabled = false;
+                // Hide loading state and start cooldown timer
                 loading.style.display = 'none';
+                startCooldownTimer();
             }
         }
         
@@ -488,33 +553,24 @@
             messageDiv.className = `message ${type}`;
             messageDiv.style.display = 'block';
             
-            // Auto hide messages after 5 seconds
-            setTimeout(() => {
-                messageDiv.style.display = 'none';
-            }, 5000);
-        }
-        
-        function startAutoRefresh() {
-            stopAutoRefresh(); // Clear any existing interval
-            autoRefreshInterval = setInterval(() => {
-                if (currentPhone) {
-                    checkStatus(currentPhone);
-                }
-            }, 300000000000000000000000000); // Refresh every 30 seconds
-        }
-        
-        function stopAutoRefresh() {
-            if (autoRefreshInterval) {
-                clearInterval(autoRefreshInterval);
-                autoRefreshInterval = null;
+            // Auto hide messages after 5 seconds (except warnings during cooldown)
+            if (type !== 'warning') {
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 5000);
             }
         }
         
+        // Initialize cooldown display on page load if there was a recent API call
+        // This would need to be enhanced with localStorage if you want persistence across page reloads
+        updateCooldownDisplay();
+        
         // Clean up interval when page is unloaded
-        window.addEventListener('beforeunload', stopAutoRefresh);
-
+        window.addEventListener('beforeunload', function() {
+            if (cooldownInterval) {
+                clearInterval(cooldownInterval);
+            }
+        });
     </script>
 </body>
-
 </html>
-
