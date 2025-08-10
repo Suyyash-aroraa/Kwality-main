@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kwality Restaurant | Admin Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1a1a2e;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 
+                        0 1px 2px rgba(0, 0, 0, 0.2),
+                        0 0 0 1px rgba(212, 175, 53, 0.1);
+            position: relative;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af35, transparent);
+        }
+        
+        .content-wrapper {
+            padding: 30px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
+        }
+        
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 28px;
+            color: #fff;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #d4af35;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background-color: #d4af35;
+            box-shadow: 0 4px 15px rgba(212, 175, 53, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background-color: #e5bd45;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 53, 0.4);
+        }
+        
+        .btn-danger {
+            background-color: #ff4b4b;
+            box-shadow: 0 4px 15px rgba(255, 75, 75, 0.15);
+        }
+        
+        .btn-danger:hover {
+            background-color: #ff5e5e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 75, 75, 0.2);
+        }
+        
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            color: #000;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+        }
+        
+        .btn-warning:hover {
+            background-color: #ffca2c;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.4);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+            font-size: 14px;
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+        
+        .flash-message {
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            background-color: rgba(21, 87, 36, 0.15);
+            border-left: 4px solid #28a745;
+            display: flex;
+            align-items: center;
+            display: none;
+        }
+
+        .flash-message.show {
+            display: flex;
+        }
+        
+        .flash-message i {
+            margin-right: 10px;
+            color: #28a745;
+            font-size: 18px;
+        }
+
+        .flash-message.error {
+            background-color: rgba(255, 75, 75, 0.15);
+            border-left-color: #ff4b4b;
+        }
+
+        .flash-message.error i {
+            color: #ff4b4b;
+        }
+        
+        .waitlist-section {
+            margin-bottom: 40px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .section-header {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: #d4af35;
+        }
+        
+        .badge {
+            display: inline-block;
+            background-color: rgba(212, 175, 53, 0.2);
+            color: #d4af35;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        th {
+            background-color: rgba(255, 255, 255, 0.03);
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        tbody tr {
+            transition: all 0.2s ease;
+        }
+        
+        tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        
+        td {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .empty-message {
+            padding: 30px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .highlight {
+            color: #d4af35;
+            font-weight: 500;
+        }
+        
+        .wait-time {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .time-short {
+            background-color: rgba(40, 167, 69, 0.15);
+            color: #28a745;
+        }
+        
+        .time-medium {
+            background-color: rgba(255, 193, 7, 0.15);
+            color: #ffc107;
+        }
+        
+        .time-long {
+            background-color: rgba(255, 75, 75, 0.15);
+            color: #ff4b4b;
+        }
+
+        .ready-timer {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            background-color: rgba(255, 193, 7, 0.15);
+            color: #ffc107;
+            display: inline-flex;
+            align-items: center;
+            margin-left: 8px;
+        }
+
+        .ready-timer.expiring {
+            background-color: rgba(255, 75, 75, 0.15);
+            color: #ff4b4b;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .auto-refresh {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .auto-refresh i {
+            margin-right: 6px;
+            animation: spin 2s linear infinite;
+            font-size: 14px;
+        }
+        
+        .decoration {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 175, 53, 0.05) 0%, rgba(212, 175, 53, 0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .decoration-1 {
+            top: -150px;
+            right: -100px;
+        }
+        
+        .decoration-2 {
+            bottom: -150px;
+            left: -100px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Action buttons container */
+        .action-buttons {
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            width: 100%;
+        }
+        
+        .action-buttons .btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loading-spinner {
+            color: #d4af35;
+            font-size: 24px;
+            animation: spin 1s linear infinite;
+        }
+        
+        /* iPad and mobile optimizations */
+        @media (max-width: 1024px) {
+            body {
+                padding: 10px;
+                font-size: 16px;
+            }
+            
+            .container {
+                max-width: 100%;
+                margin: 0;
+            }
+            
+            .content-wrapper {
+                padding: 15px;
+            }
+            
+            .page-title {
+                font-size: 24px;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 16px;
+            }
+            
+            .btn-sm {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            th, td {
+                padding: 12px 10px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+
+            /* Improve table layout on iPad */
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Make buttons more touch-friendly */
+            .btn {
+                min-height: 44px;
+            }
+        }
+        
+        /* Phone optimizations */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+            
+            th:nth-child(3), /* Phone column */
+            td:nth-child(3) {
+                display: none; /* Hide phone numbers on very small screens */
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-sm {
+                padding: 12px 10px;
+                font-size: 14px;
+            }
+        }
+        
+        /* Touch-friendly improvements */
+        button, .btn {
+            min-height: 44px; /* Apple's recommended minimum touch target size */
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <i class="fas fa-spinner loading-spinner"></i>
+    </div>
+
+    <div class="container">
+        <div class="decoration decoration-1"></div>
+        <div class="decoration decoration-2"></div>
+        
+        <div class="content-wrapper">
+            <div class="header">
+                <h1 class="page-title">Kwality Restaurant Management</h1>
+                <div class="header-actions">
+                    <a href="admin_history.html" class="btn btn-secondary">
+                        <i class="fas fa-history"></i> View History
+                    </a>
+                    <button onclick="logout()" class="btn btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+            
+            <div id="flashMessage" class="flash-message">
+                <i class="fas fa-check-circle"></i>
+                <div id="flashText"></div>
+            </div>
+            
+            <div id="smallWaitlist" class="waitlist-section">
+                <div class="section-header">
+                    <h2 class="section-title">Small Parties <span class="badge">1-4 people</span></h2>
+                    <span id="smallCount" class="badge">0 waiting</span>
+                </div>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Position</th>
+                                <th>Guest Name</th>
+                                <th>Phone</th>
+                                <th>Party Size</th>
+                                <th>Wait Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="smallTableBody">
+                            <tr>
+                                <td colspan="6" class="empty-message">No parties currently in this waitlist</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="mediumWaitlist" class="waitlist-section">
+                <div class="section-header">
+                    <h2 class="section-title">Medium Parties <span class="badge">5-6 people</span></h2>
+                    <span id="mediumCount" class="badge">0 waiting</span>
+                </div>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Position</th>
+                                <th>Guest Name</th>
+                                <th>Phone</th>
+                                <th>Party Size</th>
+                                <th>Wait Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mediumTableBody">
+                            <tr>
+                                <td colspan="6" class="empty-message">No parties currently in this waitlist</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="largeWaitlist" class="waitlist-section">
+                <div class="section-header">
+                    <h2 class="section-title">Large Parties <span class="badge">7+ people</span></h2>
+                    <span id="largeCount" class="badge">0 waiting</span>
+                </div>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Position</th>
+                                <th>Guest Name</th>
+                                <th>Phone</th>
+                                <th>Party Size</th>
+                                <th>Wait Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="largeTableBody">
+                            <tr>
+                                <td colspan="6" class="empty-message">No parties currently in this waitlist</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="auto-refresh">
+                <i class="fas fa-sync-alt"></i> Dashboard refreshes automatically every 5 seconds
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE_URL = 'http://wombat-usable-turtle.ngrok-free.app';
+        let refreshInterval;
+        
+        // Check authentication on page load
+        window.addEventListener('load', function() {
+            const token = sessionStorage.getItem('admin_token');
+            if (!token) {
+                window.location.href = 'admin_login.html';
+                return;
+            }
+            
+            // Load initial data
+            loadDashboard();
+            
+            // Set up auto-refresh
+            refreshInterval = setInterval(loadDashboard, 5000);
+        });
+        
+        async function loadDashboard() {
+            try {
+                showLoading(true);
+                
+                const response = await fetch(`${API_BASE_URL}/api/admin/dashboard`);
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    updateDashboard(data.data);
+                } else {
+                    showFlash('Error loading dashboard data', 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showFlash('Unable to connect to the server', 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        function updateDashboard(data) {
+            const now = data.timestamp;
+            
+            // Update small waitlist
+            updateWaitlistTable('small', data.waitlist_data.small, now);
+            document.getElementById('smallCount').textContent = data.waitlist_data.small.length + ' waiting';
+            
+            // Update medium waitlist
+            updateWaitlistTable('medium', data.waitlist_data.medium, now);
+            document.getElementById('mediumCount').textContent = data.waitlist_data.medium.length + ' waiting';
+            
+            // Update large waitlist
+            updateWaitlistTable('large', data.waitlist_data.large, now);
+            document.getElementById('largeCount').textContent = data.waitlist_data.large.length + ' waiting';
+        }
+        
+        function updateWaitlistTable(type, entries, now) {
+            const tableBody = document.getElementById(type + 'TableBody');
+            
+            if (entries.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="empty-message">No parties currently in this waitlist</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            entries.forEach((entry, index) => {
+                const waitMinutes = Math.floor((now - parseInt(entry.timestamp)) / 60);
+                const position = index + 1;
+                
+                let waitTimeHtml = '';
+                if (entry.status === 'ready' && entry.ready_timestamp) {
+                    const readySeconds = now - parseInt(entry.ready_timestamp);
+                    const remainingSeconds = 300 - readySeconds; // 5 minutes = 300 seconds
+                    
+                    if (remainingSeconds > 0) {
+                        const remainingMinutes = Math.floor(remainingSeconds / 60);
+                        const remainingSecs = remainingSeconds % 60;
+                        const isExpiring = remainingSeconds < 60;
+                        
+                        waitTimeHtml = `<span class="ready-timer ${isExpiring ? 'expiring' : ''}">
+                            <i class="fas fa-hourglass-half"></i> ${remainingMinutes}:${remainingSecs.toString().padStart(2, '0')}
+                        </span>`;
+                    } else {
+                        waitTimeHtml = `<span class="ready-timer expiring">
+                            <i class="fas fa-exclamation-circle"></i> Time's up!
+                        </span>`;
+                    }
+                } else {
+                    let timeClass = 'time-short';
+                    if (waitMinutes >= 30) timeClass = 'time-long';
+                    else if (waitMinutes >= 15) timeClass = 'time-medium';
+                    
+                    waitTimeHtml = `<span class="wait-time ${timeClass}">${waitMinutes} mins</span>`;
+                }
+                
+                const actionButtons = entry.status === 'waiting' 
+                    ? `<div class="action-buttons">
+                        <button type="button" class="btn btn-warning btn-sm" onclick="markReady('${entry.id}')">
+                            <i class="fas fa-clock"></i> Ready
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="removeParty('${entry.id}')">
+                            <i class="fas fa-times"></i> Remove
+                        </button>
+                    </div>`
+                    : `<div class="action-buttons">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="seatParty('${entry.id}')">
+                            <i class="fas fa-check"></i> Seat
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeParty('${entry.id}')">
+                            <i class="fas fa-times"></i> Remove
+                        </button>
+                    </div>`;
+                
+                html += `
+                    <tr>
+                        <td><span class="highlight">#${position}</span></td>
+                        <td>${entry.name}</td>
+                        <td>${entry.phone}</td>
+                        <td>${entry.party_size} guests</td>
+                        <td>${waitTimeHtml}</td>
+                        <td>${actionButtons}</td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = html;
+        }
+        
+        async function markReady(entryId) {
+            try {
+                showLoading(true);
+                
+                const response = await fetch(`${API_BASE_URL}/api/admin/ready/${entryId}`, {
+                    method: 'POST'
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    showFlash('Party successfully marked as ready');
+                    loadDashboard(); // Refresh the dashboard
+                } else {
+                    showFlash('Error updating party status', 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showFlash('Unable to connect to the server', 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        async function seatParty(entryId) {
+            try {
+                showLoading(true);
+                
+                const response = await fetch(`${API_BASE_URL}/api/admin/seat/${entryId}`, {
+                    method: 'POST'
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    showFlash('Party successfully seated');
+                    loadDashboard(); // Refresh the dashboard
+                } else {
+                    showFlash('Error updating party status', 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showFlash('Unable to connect to the server', 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        async function removeParty(entryId) {
+            if (!confirm('Are you sure you want to remove this party from the waitlist?')) {
+                return;
+            }
+            
+            try {
+                showLoading(true);
+                
+                const response = await fetch(`${API_BASE_URL}/api/admin/remove/${entryId}`, {
+                    method: 'POST'
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    showFlash('Party successfully removed from waitlist');
+                    loadDashboard(); // Refresh the dashboard
+                } else {
+                    showFlash('Error removing party', 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showFlash('Unable to connect to the server', 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        function showFlash(message, type = 'success') {
+            const flashMessage = document.getElementById('flashMessage');
+            const flashText = document.getElementById('flashText');
+            const icon = flashMessage.querySelector('i');
+            
+            flashText.textContent = message;
+            
+            if (type === 'error') {
+                flashMessage.className = 'flash-message error show';
+                icon.className = 'fas fa-exclamation-circle';
+            } else {
+                flashMessage.className = 'flash-message show';
+                icon.className = 'fas fa-check-circle';
+            }
+            
+            // Auto hide after 3 seconds
+            setTimeout(() => {
+                flashMessage.classList.remove('show');
+            }, 3000);
+        }
+        
+        function showLoading(show) {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            if (show) {
+                loadingOverlay.classList.add('show');
+            } else {
+                loadingOverlay.classList.remove('show');
+            }
+        }
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('admin_token');
+                sessionStorage.removeItem('admin_username');
+                
+                // Clear refresh interval
+                if (refreshInterval) {
+                    clearInterval(refreshInterval);
+                }
+                
+                window.location.href = 'admin_login.html';
+            }
+        }
+        
+        // Clean up interval when page is unloaded
+        window.addEventListener('beforeunload', function() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+        });
+    </script>
+</body>
+</html>

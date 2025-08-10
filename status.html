@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Check Status | Kwality Restaurant</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #d4af35, transparent);
+            border-radius: 24px 24px 0 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 15px;
+        }
+
+        .search-form {
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #d4af35;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(212, 175, 53, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #d4af35 0%, #e5bd45 100%);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 53, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px 25px;
+            margin-bottom: 25px;
+            display: none;
+        }
+
+        .status-card.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .status-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .status-header h2 {
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .position-display {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .position-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: #d4af35;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .position-text {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+        }
+
+        .status-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .status-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .status-item-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .status-item-value {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .waitlist-type {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .waitlist-small { background: rgba(40, 167, 69, 0.2); color: #28a745; }
+        .waitlist-medium { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
+        .waitlist-large { background: rgba(255, 75, 75, 0.2); color: #ff4b4b; }
+
+        .message {
+            padding: 15px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .message.success {
+            background: rgba(40, 167, 69, 0.15);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+            color: #28a745;
+        }
+
+        .message.error {
+            background: rgba(255, 75, 75, 0.15);
+            border: 1px solid rgba(255, 75, 75, 0.3);
+            color: #ff4b4b;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: #d4af35;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .loading i {
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        .refresh-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 15px;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .auto-refresh {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .position-number {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Check Your Status</h1>
+            <p>Enter your phone number to see your position</p>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <div class="search-form">
+            <form id="statusForm">
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">
+                    <i class="fas fa-search"></i> Check Status
+                </button>
+            </form>
+
+            <div id="loading" class="loading">
+                <i class="fas fa-spinner"></i> Checking your status...
+            </div>
+        </div>
+
+        <div id="statusCard" class="status-card">
+            <div class="status-header">
+                <h2 id="guestName">Welcome back!</h2>
+            </div>
+
+            <div class="position-display">
+                <span id="positionNumber" class="position-number">#1</span>
+                <div class="position-text">in line</div>
+            </div>
+
+            <div class="status-details">
+                <div class="status-item">
+                    <div class="status-item-label">Party Size</div>
+                    <div class="status-item-value" id="partySize">4 people</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-item-label">Waitlist</div>
+                    <div class="status-item-value">
+                        <span id="waitlistType" class="waitlist-type waitlist-small">Small</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn refresh-btn" id="refreshBtn">
+                <i class="fas fa-sync-alt"></i> Refresh Status
+            </button>
+
+            <div class="auto-refresh">
+                <i class="fas fa-clock"></i> Updates automatically every 30 seconds
+            </div>
+        </div>
+
+        <div class="back-link">
+            <a href="join.html">
+                <i class="fas fa-plus"></i> Join a new waitlist
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://wombat-usable-turtle.ngrok-free.app';
+        let autoRefreshInterval;
+        let currentPhone = '';
+        
+        // Check for phone number in URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const phoneParam = urlParams.get('phone');
+        if (phoneParam) {
+            document.getElementById('phone').value = phoneParam;
+            checkStatus(phoneParam);
+        }
+        
+        document.getElementById('statusForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const phone = document.getElementById('phone').value.trim();
+            if (phone) {
+                await checkStatus(phone);
+            }
+        });
+        
+        document.getElementById('refreshBtn').addEventListener('click', async function() {
+            if (currentPhone) {
+                await checkStatus(currentPhone);
+            }
+        });
+        
+        async function checkStatus(phone) {
+            const submitBtn = document.getElementById('submitBtn');
+            const refreshBtn = document.getElementById('refreshBtn');
+            const loading = document.getElementById('loading');
+            const messageDiv = document.getElementById('message');
+            const statusCard = document.getElementById('statusCard');
+            
+            currentPhone = phone;
+            
+            // Show loading state
+            if (submitBtn) submitBtn.disabled = true;
+            if (refreshBtn) refreshBtn.disabled = true;
+            loading.style.display = 'block';
+            messageDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ phone: phone })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    displayStatus(data.data);
+                    statusCard.classList.add('show');
+                    startAutoRefresh();
+                } else {
+                    showMessage(data.message, 'error');
+                    statusCard.classList.remove('show');
+                    stopAutoRefresh();
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('Unable to connect to the server. Please try again.', 'error');
+                statusCard.classList.remove('show');
+                stopAutoRefresh();
+            } finally {
+                // Hide loading state
+                if (submitBtn) submitBtn.disabled = false;
+                if (refreshBtn) refreshBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+        
+        function displayStatus(data) {
+            document.getElementById('guestName').textContent = `Hello, ${data.name}!`;
+            document.getElementById('positionNumber').textContent = `#${data.position}`;
+            document.getElementById('partySize').textContent = `${data.party_size} ${data.party_size == 1 ? 'person' : 'people'}`;
+            
+            const waitlistTypeElement = document.getElementById('waitlistType');
+            waitlistTypeElement.textContent = data.waitlist_type.charAt(0).toUpperCase() + data.waitlist_type.slice(1);
+            waitlistTypeElement.className = `waitlist-type waitlist-${data.waitlist_type}`;
+        }
+        
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            
+            // Auto hide messages after 5 seconds
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        function startAutoRefresh() {
+            stopAutoRefresh(); // Clear any existing interval
+            autoRefreshInterval = setInterval(() => {
+                if (currentPhone) {
+                    checkStatus(currentPhone);
+                }
+            }, 30000); // Refresh every 30 seconds
+        }
+        
+        function stopAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+            }
+        }
+        
+        // Clean up interval when page is unloaded
+        window.addEventListener('beforeunload', stopAutoRefresh);
+
+    </script>
+</body>
+</html>
