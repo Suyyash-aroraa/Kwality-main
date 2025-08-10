@@ -609,11 +609,31 @@
             refreshInterval = setInterval(loadDashboard, 5000);
         });
         
+        async function makeApiRequest(url, options = {}) {
+            const headers = {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true',
+                'Accept': 'application/json',
+                ...options.headers
+            };
+            
+            return fetch(url, {
+                ...options,
+                headers,
+                mode: 'cors'
+            });
+        }
+        
         async function loadDashboard() {
             try {
                 showLoading(true);
                 
-                const response = await fetch(`${API_BASE_URL}/api/admin/dashboard`);
+                const response = await makeApiRequest(`${API_BASE_URL}/api/admin/dashboard`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 const data = await response.json();
                 
                 if (data.status === 'success') {
@@ -624,7 +644,7 @@
                 
             } catch (error) {
                 console.error('Error:', error);
-                showFlash('Unable to connect to the server', 'error');
+                showFlash(`Unable to connect to the server: ${error.message}`, 'error');
             } finally {
                 showLoading(false);
             }
@@ -722,7 +742,7 @@
             try {
                 showLoading(true);
                 
-                const response = await fetch(`${API_BASE_URL}/api/admin/ready/${entryId}`, {
+                const response = await makeApiRequest(`${API_BASE_URL}/api/admin/ready/${entryId}`, {
                     method: 'POST'
                 });
                 
@@ -747,7 +767,7 @@
             try {
                 showLoading(true);
                 
-                const response = await fetch(`${API_BASE_URL}/api/admin/seat/${entryId}`, {
+                const response = await makeApiRequest(`${API_BASE_URL}/api/admin/seat/${entryId}`, {
                     method: 'POST'
                 });
                 
@@ -776,7 +796,7 @@
             try {
                 showLoading(true);
                 
-                const response = await fetch(`${API_BASE_URL}/api/admin/remove/${entryId}`, {
+                const response = await makeApiRequest(`${API_BASE_URL}/api/admin/remove/${entryId}`, {
                     method: 'POST'
                 });
                 
@@ -849,5 +869,4 @@
         });
     </script>
 </body>
-
 </html>
