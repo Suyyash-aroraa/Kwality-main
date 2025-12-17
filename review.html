@@ -9,7 +9,6 @@
       name="description"
       content="Welcome to Kwality! Discover our exceptional products and services designed to deliver quality and satisfaction. Explore our menu, gallery, and more today!"
     />
-
     <script
       src="https://kit.fontawesome.com/4a9d0de6bd.js"
       crossorigin="anonymous"
@@ -22,6 +21,76 @@
     />
     <link rel="icon" href="./Assets/images/icon.png" />
     <link rel="stylesheet" href="./Assets/css/modern-review.css" />
+    <style>
+      /* Additional styles for feedback form */
+      .feedback-form {
+        margin: 20px 0;
+      }
+
+      .feedback-form label {
+        display: block;
+        margin-bottom: 15px;
+        text-align: left;
+        font-size: 1.1rem;
+        color: var(--text-color);
+      }
+
+      .feedback-form input,
+      .feedback-form textarea {
+        width: 100%;
+        padding: 12px;
+        margin-top: 8px;
+        border: 2px solid var(--accent-color);
+        border-radius: var(--border-radius);
+        background: rgba(34, 34, 79, 0.6);
+        color: var(--text-color);
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1rem;
+        transition: all var(--transition-speed);
+      }
+
+      .feedback-form textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      .feedback-form input:focus,
+      .feedback-form textarea:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        background: rgba(34, 34, 79, 0.8);
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+      }
+
+      .feedback-form input::placeholder,
+      .feedback-form textarea::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .form-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .form-actions .btn {
+        width: 100%;
+        margin: 0;
+      }
+
+      @media (max-width: 768px) {
+        .feedback-form label {
+          font-size: 1rem;
+        }
+
+        .feedback-form input,
+        .feedback-form textarea {
+          padding: 10px;
+          font-size: 0.95rem;
+        }
+      }
+    </style>
   </head>
   <body>
     <img
@@ -32,7 +101,6 @@
     />
     <div class="main-review">
       <h2>How was your experience with us?</h2>
-
       <a href="https://reviewthis.biz/kwality-gwalior"
         ><button class="great-btn btn" id="great-btn">
           <h3>EXCELLENT</h3>
@@ -55,20 +123,78 @@
         <h2>
           We appreciate your feedback. How can we improve your experience?
         </h2>
-
-        <a href="/#contact"
-          ><button class="btn main-btn">
-            <h3>Share Feedback</h3>
-          </button></a
+        
+        <form
+          class="feedback-form"
+          action="https://formspree.io/f/xrbnndvz"
+          method="POST"
+          id="feedback-form"
         >
-        <a href="/"
-          ><button class="btn">
-            <h3>Maybe Later</h3>
-          </button></a
-        >
+          <label>
+            Your email:
+            <input 
+              type="email" 
+              name="email" 
+              placeholder="your@email.com"
+              required
+            >
+          </label>
+          <label>
+            Your message:
+            <textarea 
+              name="message" 
+              placeholder="Tell us how we can improve..."
+              required
+            ></textarea>
+          </label>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn main-btn">
+              <h3>Submit Feedback</h3>
+            </button>
+            <button type="button" class="btn" id="maybe-later">
+              <h3>Maybe Later</h3>
+            </button>
+          </div>
+        </form>
       </div>
     </section>
 
-    <script src="./review.js"></script>
+    <script>
+      const notGreatBtn = document.getElementById('not-great-btn');
+      const notGreatOptions = document.getElementById('not-great-options');
+      const closeNotGreat = document.getElementById('close-not-great');
+      const maybeLater = document.getElementById('maybe-later');
+      const feedbackForm = document.getElementById('feedback-form');
+
+      notGreatBtn.addEventListener('click', () => {
+        notGreatOptions.style.display = 'flex';
+      });
+
+      closeNotGreat.addEventListener('click', () => {
+        notGreatOptions.style.display = 'none';
+      });
+
+      maybeLater.addEventListener('click', () => {
+        notGreatOptions.style.display = 'none';
+      });
+
+      // Close modal when clicking outside
+      notGreatOptions.addEventListener('click', (e) => {
+        if (e.target === notGreatOptions) {
+          notGreatOptions.style.display = 'none';
+        }
+      });
+
+      // Handle form submission
+      feedbackForm.addEventListener('submit', (e) => {
+        // Formspree will handle the submission
+        setTimeout(() => {
+          alert('Thank you for your feedback! We truly appreciate it.');
+          notGreatOptions.style.display = 'none';
+          feedbackForm.reset();
+        }, 100);
+      });
+    </script>
   </body>
 </html>
