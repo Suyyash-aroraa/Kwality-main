@@ -265,12 +265,12 @@
 
             <div class="form-group">
                 <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" minlength="10" required>
             </div>
 
             <div class="form-group">
                 <label for="party_size">Party Size</label>
-                <input type="text" id="party_size" name="party_size" placeholder="Enter your party size" required>
+                <input type="number" id="party_size" name="party_size" placeholder="Enter your party size" min="1" max="30" required>
             </div>
 
             <button type="submit" class="btn" id="submitBtn">
@@ -426,6 +426,19 @@
                 return;
             }
             
+            // Validate phone number length
+            if (formData.phone.length < 10) {
+                showMessage('Phone number must be at least 10 digits', 'error');
+                return;
+            }
+            
+            // Validate party size
+            const partySize = parseInt(formData.party_size);
+            if (partySize < 1 || partySize > 30) {
+                showMessage('Party size must be between 1 and 30', 'error');
+                return;
+            }
+            
             // Show loading state
             submitBtn.disabled = true;
             loading.style.display = 'block';
@@ -480,8 +493,4 @@
         }
     </script>
 </body>
-
 </html>
-
-
-
